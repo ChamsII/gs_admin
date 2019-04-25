@@ -1,0 +1,155 @@
+
+
+<div class="container-fluid">
+  
+  <div class="row margin-top-10">
+
+    <!-- Liste services  -->
+    <div class="col-6">
+      
+        <div class="row">
+
+          <div class="col">
+        
+            <div class="card">
+        
+              <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-2">Services</div>
+                  <div class="col-8">Search</div>
+                  <div class="col-2"> >> </div>
+                </div>
+              </div>
+        
+              <div class="card-body">
+        
+                <div class="row" *ngFor="let srv of data.services; index as i;">
+        
+                  <div class="col-9" tappable (click)="onSelectService(srv, i)" [ngClass]="{'serviceActifSelected': srv.status == 1 && data.selected.basepath == srv.basepath, 
+                  'serviceActif': srv.status == 1 && data.selected.basepath != srv.basepath, 
+                  'serviceInActifSelected': srv.status == 0 && data.selected.basepath == srv.basepath, 
+                  'serviceInActif': srv.status == 0 && data.selected.basepath != srv.basepath}" >
+                    {{srv.basepath}}
+                  </div>
+        
+                  <div class="col-1">
+                      <button class="btn btn-clear" (click)="editService(srv)" >
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div class="col-1">
+                      <button class="btn btn-clear" (click)="stopStartService(srv)" >
+                          <i class="fa fa-stop" aria-hidden="true" *ngIf="srv.status == 1" ></i>
+                            <i class="fa fa-play" aria-hidden="true" *ngIf="srv.status == 0" ></i> 
+                      </button>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-clear" (click)="deleteService(srv)" >
+                        <i class="fa fa-times text_red" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+        
+            </div>
+        
+          </div>
+        
+        </div>
+
+    </div>
+    <!-- Liste services  -->
+
+    <!-- Apis  -->
+    <div class="col-3">
+        <app-agent-apis [serviceSelect]="data.selected" (apiSelecte)="onApiSelected($event)" ></app-agent-apis>
+    </div>
+    <!-- Apis  -->
+
+    <!-- Operations  -->
+    <div class="col-3">
+        <app-agent-operations *ngIf="operationSelected" [apiSelect]="operationSelected" (opSelecte)="onOperationSelected($event)"></app-agent-operations>
+    </div>
+    <!-- Operations  -->
+
+
+  </div>
+
+
+  <!-- New line -->
+  <div class="row margin-top-20">
+
+    <!-- Transfert(s) - Key  -->
+    <div class="col-6">
+        <app-agent-transferts *ngIf="transferPropSelected" [operationSelect]="transferPropSelected"></app-agent-transferts>
+    </div>
+    <!-- Transfert(s) - Key  -->
+
+    <!-- Feeder properties  -->
+    <div class="col-6">
+      <app-agent-feeders *ngIf="feederPropSelected" [operationSelect]="feederPropSelected" ></app-agent-feeders>
+   </div>
+    <!--Feeder properties  -->
+
+  </div>
+  <!-- New line -->
+
+
+  <!-- New line -->
+  <div class="row margin-top-20">
+
+    <!-- Paramèter(s)  -->
+    <div class="col-4">
+        <app-agent-parameters *ngIf="parametersSelected" [operationSelect]="parametersSelected"></app-agent-parameters>
+    </div>
+    <!-- Paramèter(s) -->
+
+
+    <!-- Propriétés / Règles -->
+    <div class="col-4">
+        <app-agent-properties *ngIf="regExpKeysOSelected" [operationSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" ></app-agent-properties>
+    </div>
+    <!-- Propriétés / Règles -->
+
+
+     <!-- Dataset -->
+     <div class="col-4">
+        <app-agent-datasets *ngIf="dataSetsSelected" [dataSetsSelect]="dataSetsSelected" (dtsSelecte)="onSelectDataset($event)" ></app-agent-datasets>
+    </div>
+    <!-- Dataset -->
+
+
+  </div>
+  <!-- New line -->
+
+
+
+  <!-- New line -->
+  <div class="row margin-top-20">
+
+    <!-- Détail -->
+    <div class="col-4">
+        <app-agent-details [dataSetKeySelect]="this.dataSet.selected.dataset" [dataSetsSelect]="dataSet.selected.parameters"></app-agent-details>
+    </div>
+    <!-- Détail -->
+
+
+    <!-- Template -->
+    <div class="col-8">
+        <app-agent-template [templateSelect]="templateSelected" ></app-agent-template>
+    </div>
+    <!-- Template -->
+
+  </div>
+  <!-- New line -->
+
+
+
+
+
+
+
+
+
+</div>

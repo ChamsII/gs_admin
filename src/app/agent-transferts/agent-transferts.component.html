@@ -1,0 +1,82 @@
+<div class="row ">
+
+    <div class="col">
+        
+        <div class="card">
+
+            <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-10">Transfert(s) and key</div>
+                  <div class="col-2 text-right"> + </div>
+                </div>
+            </div>
+
+
+            <div class="card-body" *ngIf="operationSelected" text-wrap >
+                <div class="row" *ngFor="let tps of operationSelected; index as i;">
+
+                  <div class="col-2">
+                      <span class="sDetail">(name)</span> <br /> <span class="text-bold text-normal"> {{ tps.name }} </span>
+                  </div>
+
+                  <div class="col-2"  >
+                      <span class="sDetail">(source)</span> <br /> <span class="text-normal"> {{ tps.source }} </span>
+                  </div>
+
+                  <div class="col-2">
+                      <span class="sDetail">(path)</span> <br /> <span class="text-normal"> {{ tps.path }} </span>
+                  </div>
+
+
+                  <div class="col-4 text-normal" >
+                      
+                    <div class="row" *ngIf="tps.template && tps.template != ''" >
+                      <div class="col titleChamp"> <img src="assets/img/template.png" width="17px" /> <span class="sDetail">(template)</span> </div>
+                      <div class="col valueChamp"> {{ tps.template }} </div>
+                    </div>
+
+                    <div class="row" *ngIf="tps.isUnique" >
+                      <div class="col titleChamp"> <i class="fa fa-object-ungroup" aria-hidden="true"></i> <span class="sDetail">(isUnique)</span> </div>
+                      <div class="col valueChamp"> Unique </div>
+                    </div>
+
+                    <div class="row" *ngIf="tps.value && tps.value != '' " >
+                      <div class="col titleChamp"> <i class="fa fa-tags" aria-hidden="true"></i> <span class="sDetail">(value)</span> </div>
+                      <div class="col valueChamp"> {{ tps.value }} </div>
+                    </div>
+
+                    <div class="row" >
+                      <div class="col titleChamp"> <i class="fa fa-key" aria-hidden="true"></i> <span class="sDetail">(isKey)</span> </div>
+                      <div class="col valueChamp" *ngIf="tps.isKey"> key </div>
+                      <div class="col valueChamp" *ngIf="!tps.isKey"> not key </div>
+                    </div>
+
+                    <div class="row" *ngIf="tps.isFeeder" >
+                      <div class="col titleChamp"> <i class="fa fa-rss" aria-hidden="true"></i> <span class="sDetail">(feeder)</span> </div>
+                      <div class="col valueChamp"> {{tps.feederName}} </div>
+                    </div>
+
+                  </div>
+
+
+                  <div class="col-1 text-right">
+                      <button class="btn btn-clear" small (click)="editApi(tps)" >
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div class="col-1 text-right">
+                    <button class="btn btn-clear" small (click)="deleteApi(tps)" >
+                        <i class="fa fa-times text_red" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

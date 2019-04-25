@@ -1,0 +1,56 @@
+<div class="row ">
+
+    <div class="col">
+        
+        <div class="card">
+
+            <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-10">Detail -- {{dataSetKey.value}} </div>
+                  <div class="col-2 text-right"> + </div>
+                </div>
+            </div>
+
+            
+
+            <div class="card-body"  text-wrap >
+
+
+              <div *ngIf="dataSetsSelected"> 
+
+                  <div class="row" *ngIf="dataSetsSelected.template" >
+
+                    <div class="col-4 notSeleted" >
+                      <span class="text-bold"> Template </span> 
+                    </div>
+                    <div class="col-4 notSeleted" >
+                      <span class="text-normal"> {{ dataSetsSelected.template }} </span> 
+                    </div>
+  
+                  </div>
+
+
+                  <div class="row" *ngIf="dataSetsSelected.delay != undefined">
+
+                    <div class="col-4 notSeleted" >
+                      <span class="text-bold"> Delay </span> 
+                    </div>
+                    <div class="col-4 notSeleted" >
+                      <span class="text-normal"> {{ dataSetsSelected.delay }} </span> 
+                    </div>
+  
+                  </div>
+
+
+
+              </div>
+
+                
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

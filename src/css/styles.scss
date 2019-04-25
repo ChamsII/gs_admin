@@ -1,0 +1,254 @@
+/*
+	Copyright (C) 2019  Chamsoudine ALI MOUIGNI
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	
+*/
+/* You can add global styles to this file, and also import other style files */
+$table-head-color: #000;
+$table-head-bg : #e9ecef;
+$table-border-color: #dee2e6;
+
+.container90 {
+    width: 90%;
+    margin: auto;
+}
+
+.container100 {
+    width: 100%;
+    margin: auto;
+    padding: 10px !important;
+}
+
+.paddingTop {
+    padding-top: 50px !important;
+}
+
+.bloc {
+    word-wrap: break-word !important;
+}
+
+.widthContainer {
+    width: 99% !important;
+}
+
+
+.footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    position:absolute;
+    background: rgba(60, 72, 88, 0.2);
+}
+
+.rhead {
+    padding: 8px 2px 8px 2px !important;
+    color: $table-head-color;
+    background-color: $table-head-bg;
+    border-color: $table-border-color;
+}
+.rtext {
+    text-align: inherit;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+.rtext-body{
+
+}
+.rtext-head{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left !important;
+}
+
+.rbody {
+    padding: 8px 2px 8px 2px !important;
+    color: $table-head-color;
+    border-color: $table-border-color;
+    border-bottom: 1px solid #dee2e6;
+}
+.rtext-bold {
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none !important;
+
+}
+
+.d-flex a, .d-flex a:hover {
+    margin: 10px 15px 0;
+    border-radius: 3px;
+    color: #3c4858;
+    font-size: 13px;
+    padding: 10px 15px;
+    transition: 150ms ease-in;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #3c4858;
+}
+
+.back_red {
+    background: linear-gradient(60deg,#ef5350,#e53935);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(244,67,54,.4);
+}
+
+.back_blue {
+    background: linear-gradient(60deg,#26c6da,#00acc1);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(0,188,212,.4);
+}
+
+.back_green {
+    background: linear-gradient(60deg,#66bb6a,#43a047);
+    background-color: rgba(0, 0, 0, 0);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(76,175,80,.4);
+}
+
+.back_warning {
+    background: linear-gradient(60deg,#ffa726,#fb8c00);
+    background-color: rgba(0, 0, 0, 0);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(255,152,0,.4);
+}
+
+.footer-right {
+    text-align: right;
+    color: #3c4858;
+    padding-right: 20px !important;
+    font-size: 12px !important
+}
+
+.footer-left {
+    text-align: left;
+    color: #3c4858;
+    padding-right: 20px !important;
+    font-size: 12px !important
+}
+
+.copyright {
+    font-weight: bold;
+    font-size: 14px;
+    color: #ef5350 !important;
+}
+
+.card {
+    background: none !important;
+}
+
+/*
+.list-group .card {
+    border: none !important;
+}
+*/
+.list-group .card-subtitle {
+    font-size: 14px !important;
+    padding-top: -10px;
+}
+
+
+.list-group .card {
+    border: 0;
+    margin-bottom: 1px;
+    margin-top: 10px;
+    border-radius: 6px;
+    color: #333;
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.14);
+    padding: 1px !important;
+}
+
+.back_red1 {
+    
+}
+
+.list-group .card-title{
+    font-size: 14px !important;
+    font-weight: bold;
+}
+
+.full-width{
+    width: 100% !important;
+}
+
+.div_red {
+    background: linear-gradient(60deg,#ef5350,#e53935);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(244,67,54,.4);
+    padding: 5px !important;
+    margin: 5px 0px 5px 5px !important;
+    text-align: center;
+    cursor: pointer;
+}
+
+.div_blue {
+    background: linear-gradient(60deg,#26c6da,#00acc1);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(0,188,212,.4);
+    margin: 5px  0px 5px 0px !important;
+    padding: 5px !important;
+    text-align: center;
+    cursor: pointer;
+}
+
+.border {
+    border: 1px red solid !important;
+}
+
+.margin-top-10 {
+    margin-top: 10px !important;
+    clear: both !important;
+}
+
+.margin-top-20 {
+    margin-top: 20px !important;
+    clear: both !important;
+}
+
+.text_red {
+    color: red !important;
+}
+
+.card-header-red {
+
+}
+
+.header-card-red {
+    margin-top: -20px;
+    background: linear-gradient(60deg,#ef5350,#e53935);
+    color: #FFF !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(244,67,54,.4);
+    padding: 10px 2px 10px 2px;
+    border-radius: 5px;
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.text-normal {
+    font-weight: 100 !important;
+}

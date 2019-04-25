@@ -1,0 +1,43 @@
+<div class="row ">
+
+    <div class="col">
+        
+        <div class="card">
+
+            <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-10">Template --  </div>
+                  <div class="col-2 text-right"> + </div>
+                </div>
+            </div>
+
+
+            <div class="card-body"  text-wrap >
+                
+                <!-- 
+                  <ace-editor [(text)]="templateSelected" #editor style="height:150px;"></ace-editor>
+                  [durationBeforeCallback]="1000" wait 1s before callback 'textChanged' sends new value
+                  [autoUpdateContent]="true" //change content when [text] change
+                  [mode]="'sql'" //string or object (thx ckiffel)
+                -->
+
+                <div ace-editor
+                  [(text)]="templateSelected"
+                  [mode]="modeSelected"
+                  [theme]="themeSelected"
+                  [options]="options"
+                  [readOnly]="false"
+                  [autoUpdateContent]="true"
+                  [durationBeforeCallback]="1000" 
+                  (textChanged)="onChange($event)"
+                  style="min-height: 200px; width:100%; overflow-x: auto;">
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

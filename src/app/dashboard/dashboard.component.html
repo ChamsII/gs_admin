@@ -1,0 +1,65 @@
+<div class="d-flex" id="wrapper">
+
+    <app-sidebar [sidebarValue]="showSidbar" (toggleSide)="toggleSidebar($event)" (selectAgent)="agentSelected($event)"></app-sidebar>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      
+      <!-- Start top -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+
+        <button class="btn btn-clear" id="menu-toggle" (click)="clickSidebar()" >
+            <fa name="cog" animation="spin"  ></fa>
+            <i class="fa fa-hand-o-left" aria-hidden="true" *ngIf="showSidbar"  ></i>
+            <i class="fa fa-hand-o-right" aria-hidden="true" *ngIf="!showSidbar"  ></i>
+        </button>
+
+        <button class="navbar-toggler" type="button" (click)="clickSidebar()" data-toggle="collapse" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link back_blue" href="#"> 
+                <span class="sr-only">(current)</span>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                New Service
+              </a>
+            </li>
+          </ul>
+        </div>
+
+
+      </nav>
+      <!-- End top -->
+
+      <!-- Start content-->
+
+      <app-agent-dash [agentSelect]="agentSelect"></app-agent-dash>
+      
+      <!-- End content-->
+
+
+
+      <!-- Start Footer -- >
+      <div class="footer">
+        <div class="row">
+          <div class="col-6 footer-left">
+            Usine à bouchon
+          </div>
+          <div class="col-6 footer-right">
+              <i class="fa fa-copyright" aria-hidden="true"></i> 2019, made by <span class="copyright">GFI</span> 
+          </div>
+
+        </div>
+      </div>
+      <!- - End footer -->
+
+
+    </div>
+    <!-- content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->

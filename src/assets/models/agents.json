@@ -1,0 +1,20 @@
+{
+    "agents": [
+        {
+            "id": 1,
+            "name": "fervent_fermat",
+            "hostname": "localhost",
+            "admin_port": "9085",
+            "agent_port": "9876",
+            "docker": true
+        },
+        {
+            "id": 2,
+            "name": "frosty_knuth",
+            "hostname": "localhost",
+            "admin_port": "9085",
+            "agent_port": "9877",
+            "docker": true
+        }
+    ]
+}

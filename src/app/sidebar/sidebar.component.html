@@ -1,0 +1,39 @@
+<!-- Sidebar -->
+<div class="bg-light border-right" id="sidebar-wrapper" *ngIf="showSidbar" >
+
+    <div class="sidebar-heading border-bottom">
+        <img width="100%" alt="Angular Logo" src="assets/img/genesis.png">
+    </div>
+
+    <div class="list-group list-group-flush">
+      
+      <br />
+      <div class="row">
+        <div class="col-9">
+            <div class="div_red">GeneSiS Agents </div>
+        </div>
+        <div class="col-3" (click)="newAgent()" >
+            <div class="div_blue">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </div>
+        </div>
+      </div>
+      
+      <a *ngFor="let agent of agentsList; index as ii;" href="#" (click)="agentSelected(agent)" class="card" >
+
+        <div class="card-body">
+          <span class="card-title">
+              <i class="fa fa-inbox" aria-hidden="true"></i>
+            {{agent.name}}
+          </span>
+          <br />
+          <span class="card-subtitle mb-2 text-muted">Url : {{agent.hostname}}:{{agent.agent_port}} </span>
+          <footer class="blockquote-footer" *ngIf="agent.docker" > Docker agent </footer>
+          <footer class="blockquote-footer" *ngIf="!agent.docker" > Vm agent </footer>
+        </div>
+
+      </a>
+
+    </div>
+</div>
+<!-- End sidebar-->

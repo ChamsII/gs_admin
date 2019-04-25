@@ -1,0 +1,46 @@
+<div class="row ">
+
+    <div class="col">
+        
+        <div class="card">
+
+            <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-10">DataSets </div>
+                  <div class="col-2 text-right"> + </div>
+                </div>
+            </div>
+
+            
+
+            <div class="card-body"  text-wrap >
+
+
+              <div *ngIf="dataSetsSelected"> 
+
+                <div class="row" *ngFor="let dts of dataSetsSelected; index as i;">
+
+                    <div class="col-10" tappable (click)="onSelectDataset(dts)" [ngClass]="{'datasetSelected': dts.value == dtsetSelected.value , 'notSeleted': dts.value != dtsetSelected.value }" >
+                      <span class="text-bold"> {{ dts.value }} </span> 
+                    </div>
+  
+  
+                    <div class="col-1 text-right">
+                        <button class="btn btn-clear" small (click)="editApi(dts)" >
+                            <i class="fa fa-times text_red" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                  </div>
+
+              </div> <!-- reg exp -->
+
+                
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

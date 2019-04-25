@@ -1,0 +1,41 @@
+<div class="row">
+
+    <div class="col">
+        
+        <div class="card">
+
+            <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-8">Opérations</div>
+                  <div class="col-4"> + </div>
+                </div>
+            </div>
+
+
+            <div class="card-body" *ngIf="apiSelectedOperations" >
+                <div class="row" *ngFor="let api of apiSelectedOperations; index as i;">
+                  <div class="col-9" tappable (click)="onSelectOperation(api)" [ngClass]="{'agentSelected': api.method == operationSelected.method , 'agentNoSelected': api.method != operationSelected.method }" >
+                    <span class="text-bold"> {{ api.method }} </span>
+                  </div>
+
+                  <div class="col-1">
+                      <button class="btn btn-clear" (click)="editApi(api)" >
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-clear" (click)="deleteApi(api)" >
+                        <i class="fa fa-times text_red" aria-hidden="true"></i>
+                    </button>
+                  </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

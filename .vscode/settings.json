@@ -1,0 +1,5 @@
+{
+    "http.proxy": "http://10.38.248.20:3128/",
+    "https.proxy": "http://10.38.248.20:3128/",
+    "http.proxyStrictSSL": false
+}

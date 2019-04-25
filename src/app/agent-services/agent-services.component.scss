@@ -1,0 +1,31 @@
+
+
+.serviceActif {
+    font-size: 12px;
+    color: #202020;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.serviceInActif {
+    font-size: 12px;
+    color: #757575;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.serviceActifSelected {
+    font-size: 12px;
+    color: #202020;
+    font-weight: bold;
+    border-left: 3px solid #43a047;
+    cursor: pointer;
+}
+
+.serviceInActifSelected {
+    font-size: 12px;
+    color: #757575;
+    font-weight: bold;
+    border-left: 3px solid #43a047;
+    cursor: pointer;
+}
