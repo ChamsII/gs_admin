@@ -5,7 +5,7 @@
   <div class="row margin-top-10">
 
     <!-- Liste services  -->
-    <div class="col-6">
+    <div class="col-lg-6">
       
         <div class="row">
 
@@ -62,13 +62,13 @@
     <!-- Liste services  -->
 
     <!-- Apis  -->
-    <div class="col-3">
+    <div class="col-lg-3">
         <app-agent-apis [serviceSelect]="data.selected" (apiSelecte)="onApiSelected($event)" ></app-agent-apis>
     </div>
     <!-- Apis  -->
 
     <!-- Operations  -->
-    <div class="col-3">
+    <div class="col-lg-3">
         <app-agent-operations *ngIf="operationSelected" [apiSelect]="operationSelected" (opSelecte)="onOperationSelected($event)"></app-agent-operations>
     </div>
     <!-- Operations  -->
@@ -81,13 +81,13 @@
   <div class="row margin-top-20">
 
     <!-- Transfert(s) - Key  -->
-    <div class="col-6">
+    <div class="col-lg-6">
         <app-agent-transferts *ngIf="transferPropSelected" [operationSelect]="transferPropSelected"></app-agent-transferts>
     </div>
     <!-- Transfert(s) - Key  -->
 
     <!-- Feeder properties  -->
-    <div class="col-6">
+    <div class="col-lg-6">
       <app-agent-feeders *ngIf="feederPropSelected" [operationSelect]="feederPropSelected" ></app-agent-feeders>
    </div>
     <!--Feeder properties  -->
@@ -100,21 +100,21 @@
   <div class="row margin-top-20">
 
     <!-- Paramèter(s)  -->
-    <div class="col-4">
+    <div class="col-lg-4">
         <app-agent-parameters *ngIf="parametersSelected" [operationSelect]="parametersSelected"></app-agent-parameters>
     </div>
     <!-- Paramèter(s) -->
 
 
     <!-- Propriétés / Règles -->
-    <div class="col-4">
+    <div class="col-lg-4">
         <app-agent-properties *ngIf="regExpKeysOSelected" [operationSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" ></app-agent-properties>
     </div>
     <!-- Propriétés / Règles -->
 
 
      <!-- Dataset -->
-     <div class="col-4">
+     <div class="col-lg-4">
         <app-agent-datasets *ngIf="dataSetsSelected" [dataSetsSelect]="dataSetsSelected" (dtsSelecte)="onSelectDataset($event)" ></app-agent-datasets>
     </div>
     <!-- Dataset -->
@@ -129,14 +129,14 @@
   <div class="row margin-top-20">
 
     <!-- Détail -->
-    <div class="col-4">
+    <div class="col-lg-4">
         <app-agent-details [dataSetKeySelect]="this.dataSet.selected.dataset" [dataSetsSelect]="dataSet.selected.parameters"></app-agent-details>
     </div>
     <!-- Détail -->
 
 
     <!-- Template -->
-    <div class="col-8">
+    <div class="col-lg-8">
         <app-agent-template [templateSelect]="templateSelected" ></app-agent-template>
     </div>
     <!-- Template -->
