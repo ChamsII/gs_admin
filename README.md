@@ -1,27 +1,57 @@
 # GsAdmin
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+Un projet  [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+
+###### Présentation
+** GeneSiS admin ** permet d'administrer * * GeneSiS engine * * qui permet de créer des mocks de services.
+
+> Plus de détail sur [Gs-engine](https://github.com/ChamsII/gs_engine)
+
+
+## Installation
+
+```Shell
+mkdir genesis
+cd genesis
+git clone https://github.com/ChamsII/gs_admin.git
+cd gs_admin
+npm install
+```
+
+## Configuration
+
+L'admin peut re configuré en modifiant le fichier agents.json
+
+```JSON
+{
+    "agents": [
+        {
+            "id": 1,
+            "name": "fervent_fermat",
+            "hostname": "localhost",
+            "admin_port": "9085",
+            "agent_port": "9876",
+            "docker": true
+        },
+        {
+            "id": 2,
+            "name": "frosty_knuth",
+            "hostname": "localhost",
+            "admin_port": "9085",
+            "agent_port": "9877",
+            "docker": true
+        }
+    ]
+}
+```
+
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Exécutez `ng serve` pour un serveur de développement. Accédez à `http://localhost:4200/`. L'application sera automatiquement rechargée si vous modifiez l'un des fichiers source.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Exécutez `ng build` pour construire le projet. Les artefacts de construction seront stockés dans le répertoire `dist/`. Utilisez l'indicateur `--prod` pour une version de production.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
