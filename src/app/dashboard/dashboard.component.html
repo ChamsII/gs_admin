@@ -15,6 +15,21 @@
             <i class="fa fa-hand-o-right" aria-hidden="true" *ngIf="!showSidbar"  ></i>
         </button>
 
+        <div class="detailAgentSelected" >
+          <div class="row">
+            <div class="col-12 text-center" >
+                
+                <span class="nameAgent"> <i class="fa fa-inbox" aria-hidden="true"></i> {{ agentSelect.name }}  </span>
+                <span class="space"> </span>
+                <span class="urlAgent"> Agent : <i class="fa fa-link" aria-hidden="true"></i> {{agentSelect.hostname}}:{{agentSelect.agent_port}}/  </span>
+                <span class="space"> </span>
+                <span class="urlAgent"> Admin <i class="fa fa-link" aria-hidden="true"></i> {{agentSelect.hostname}}:{{agentSelect.admin_port}}/  </span>
+                <span class="space"> </span>
+
+            </div>
+          </div>
+        </div>
+
         <button class="navbar-toggler" type="button" (click)="clickSidebar()" data-toggle="collapse" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,9 +56,11 @@
       
       <!-- End content-->
 
+      <div class="margin-after-footer"></div>
 
 
-      <!-- Start Footer -- >
+
+      <!-- Start Footer -->
       <div class="footer">
         <div class="row">
           <div class="col-6 footer-left">
@@ -55,7 +72,7 @@
 
         </div>
       </div>
-      <!- - End footer -->
+      <!-- End footer -->
 
 
     </div>

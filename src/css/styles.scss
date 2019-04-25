@@ -49,7 +49,7 @@ $table-border-color: #dee2e6;
     bottom: 0;
     width: 100%;
     padding: 10px;
-    position:absolute;
+  
     background: rgba(60, 72, 88, 0.2);
 }
 
@@ -251,4 +251,13 @@ a {
 
 .text-normal {
     font-weight: 100 !important;
+}
+
+.card-body {
+    height: 200px !important;
+    overflow-y: scroll;
+}
+
+.margin-after-footer {
+    margin: 60px !important;
 }

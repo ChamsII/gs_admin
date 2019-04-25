@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
 
   agentSelected(agent){
     this.agentSelect = agent
+    console.log( this.agentSelect )
   }
 
   clickSidebar(){

@@ -27,7 +27,8 @@
             {{agent.name}}
           </span>
           <br />
-          <span class="card-subtitle mb-2 text-muted">Url : {{agent.hostname}}:{{agent.agent_port}} </span>
+          <span class="card-subtitle mb-2 text-muted">Agent : {{agent.hostname}}:{{agent.agent_port}} </span><br />
+          <span class="card-subtitle mb-2 text-muted">Admin : {{agent.hostname}}:{{agent.admin_port}} </span>
           <footer class="blockquote-footer" *ngIf="agent.docker" > Docker agent </footer>
           <footer class="blockquote-footer" *ngIf="!agent.docker" > Vm agent </footer>
         </div>
