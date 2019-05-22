@@ -9,6 +9,8 @@ export class AgentDashComponent implements OnInit {
 
   agentSelected
 
+  editModeSet
+
   constructor() { }
 
   ngOnInit() {
@@ -19,5 +21,9 @@ export class AgentDashComponent implements OnInit {
       this.agentSelected = name;
   }
 
+  @Input()
+  set editMode(name) {
+      this.editModeSet = name;
+  }
 
 }

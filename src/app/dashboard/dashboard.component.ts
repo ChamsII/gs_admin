@@ -8,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
 
   showSidbar = true
-  agentSelect
+  agentSelect = ""
+  editMode = {
+    status: false,
+    mode: ''
+  };
 
   constructor() { }
 
@@ -28,6 +32,14 @@ export class DashboardComponent implements OnInit {
 
   clickSidebar(){
     this.showSidbar = !this.showSidbar
+  }
+
+
+  openEditMode(){
+    this.editMode = {
+      status: true,
+      mode: 'createService'
+    }
   }
 
 

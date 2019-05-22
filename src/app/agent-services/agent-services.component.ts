@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input , EventEmitter , Output } from '@angular/core';
 
 import { BackendService } from '../services/backend.service'
-
+import { ConfirmationDialogService } from '../modal/alert-confirm/alert-confirm.service';
+import { EventsService } from '../services/events.service'
+import { FunctionService } from '../services/function.service'
 
 @Component({
   selector: 'app-agent-services',
@@ -10,6 +12,7 @@ import { BackendService } from '../services/backend.service'
 })
 export class AgentServicesComponent implements OnInit {
 
+  public searchString: string;
   agentSelected
   pageNum = 1
   filter = ""
@@ -48,12 +51,25 @@ export class AgentServicesComponent implements OnInit {
   dataSetsSelected
   templateSelected
 
-  constructor(public backendService: BackendService) {
+  editModeSet
+  @Output() editModeEmitter = new EventEmitter();
+
+
+  constructor(public backendService: BackendService , public confirmationDialogService: ConfirmationDialogService , 
+    public eventsService: EventsService , public functionService: FunctionService ) {
 
   }
 
   ngOnInit() {
-    
+
+    this.eventsService.serviceSelected.subscribe(srvChange => {
+      this.data.services = this.functionService.updateAPIService(srvChange, this.data.services)
+    })
+
+    this.eventsService.editMode.subscribe(editMChange => {
+      this.onEditeMode(editMChange)
+    })
+
   }
 
   /**
@@ -64,6 +80,12 @@ export class AgentServicesComponent implements OnInit {
       this.agentSelected = name;
       if( this.agentSelected )
       this.displayPage()
+  }
+
+
+  @Input()
+  set editMode(name) {
+      this.editModeSet = name;
   }
 
 
@@ -102,28 +124,30 @@ export class AgentServicesComponent implements OnInit {
               let service = {basepath: serviceResult.basepath, state: serviceResult.state , status: 0}
               if( serviceResult.state == 'running' ){
                 serviceResult.status = 1
-                if( this.data.selected == -1){
-                  this.data.selected = serviceResult
-                  this.dataSelected = this.data.selected
-                  this.operationSelected = this.dataSelected.apis[0].operations
-
-                  this.transferPropSelected = this.dataSelected.apis[0].operations[0].transferProperties
-                  this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties
-                  this.parametersSelected =  this.dataSelected.apis[0].operations[0].parameters
-                  this.regExpKeysOSelected = this.dataSelected.apis[0].operations[0].regExpKeys
-                  this.keysSelected = this.dataSelected.apis[0].operations[0].keys
-                  this.responseSelected = {
-                    delay: this.dataSelected.apis[0].operations[0].delay,
-                    responseType: this.dataSelected.apis[0].operations[0].responseType
-                  }
-
-                  console.log("dataSelectedPrime ", this.dataSelected)
-
-                }
+              
                 service.status = 1
               }else{
                 service.status = 0
+                serviceResult.status = 0
               }
+
+              if( this.data.selected == -1){
+                this.data.selected = serviceResult
+                this.dataSelected = this.data.selected
+                this.operationSelected = this.dataSelected.apis[0].operations
+
+                this.transferPropSelected = this.dataSelected.apis[0].operations[0].transferProperties
+                this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties
+                this.parametersSelected =  this.dataSelected.apis[0].operations[0].parameters
+                this.regExpKeysOSelected = this.dataSelected.apis[0].operations[0].regExpKeys
+                this.keysSelected = this.dataSelected.apis[0].operations[0].keys
+                this.responseSelected = {
+                  delay: this.dataSelected.apis[0].operations[0].delay,
+                  responseType: this.dataSelected.apis[0].operations[0].responseType
+                }
+                console.log("dataSelectedPrime ", this.dataSelected)
+              }
+
               this.data.services.push(serviceResult)
 
             })
@@ -147,6 +171,24 @@ export class AgentServicesComponent implements OnInit {
 
   }
 
+  /**
+   * Previous page : list of services 
+  */
+  previousPage(){
+    this.pageNum -= 1
+    this.data.selected != -1 
+    this.displayPage()
+  }
+
+  /**
+   * Next page : list of services 
+  */
+  nextPage(){
+    this.pageNum += 1
+    this.data.selected != -1 
+    this.displayPage()
+  }
+
 
 
 
@@ -154,7 +196,7 @@ export class AgentServicesComponent implements OnInit {
    * A chaque séelection d'un service
    * @param service 
    */
-  onSelectService(service, index){
+  onSelectService(service, index?){
     this.data.selected = service
     console.log( "this.data.selected " , this.data.selected  )
     this.dataSelected = this.data.selected
@@ -207,7 +249,8 @@ export class AgentServicesComponent implements OnInit {
   onOperationSelected(operation){
     console.log( "onOperationSelected", operation)
     this.oneOpSelected = operation
-    this.refreshDatasetsList()
+    if( this.data.selected != -1 )
+      this.refreshDatasetsList()
   }
 
 
@@ -300,16 +343,125 @@ export class AgentServicesComponent implements OnInit {
 
 
 
+  /**
+   * Edit service 
+   * @param srv 
+   */
+  editService(srv, index) {
 
-  editService(srv) {
-    console.log("edit ", srv)
+    let editmode = {
+      status: true,
+      mode: 'updateService'
+    }
+    this.editModeSet = editmode
+
+    if( this.dataSelected.basepath != srv.basepath )
+      this.onSelectService(srv, index);
+
+    this.editModeEmitter.emit( this.editModeSet )
+
   }
+
+
+  /**
+   * Stop and start service 
+   * @param srv 
+   */
   stopStartService(srv) {
-    console.log("stopStartService ", srv)
+    
+    let action = "start"
+    if( srv.state == "running" ){
+      //Stop stervice
+      action = "stop"
+    }
+
+    let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
+    let url = `${agentUrl}${action}/${srv.basepath}`
+
+    this.backendService.getData( url)
+    .then(resultatRequest => {
+      this.requestResultat = resultatRequest
+
+      srv.state = this.requestResultat.state == "stopped" ? 0:1
+      srv.status = this.requestResultat.state == "stopped" ? 0:1
+      //Service selected == service updated
+      if( this.dataSelected.basepath == this.requestResultat.basepath ){
+
+        this.dataSelected = this.requestResultat
+        this.dataSelected.status = this.requestResultat.state == "stopped" ? 0:1
+        this.data.selected = this.dataSelected
+
+      }else {
+
+        for( var id in this.data.services ){
+          if( this.data.services[id].basepath == this.requestResultat.basepath ){
+            this.data.services[id].state = this.requestResultat.state
+            this.data.services[id].status = this.requestResultat.state == "stopped" ? 0:1
+          }
+        }
+
+      }
+      if( this.requestResultat.state == "stopped" )
+        this.backendService.toastrwaring( "Service " + this.requestResultat.basepath + " arrêté " )
+      else
+        this.backendService.successmsg( "Service " + this.requestResultat.basepath + " démarré " )
+
+    })
+    .catch(() => {
+      
+    })
+
+
   }
-  deleteService(srv) {
-    console.log("deleteService ", srv)
+  
+
+  /**
+   * Supprimer un service 
+   * @param srv 
+   * @param index 
+  */
+  deleteService(srv, index) {
+    console.log( srv )
+
+    this.confirmationDialogService.confirm('', `Etes-vous sur de vouloir supprimer le service ${srv.basepath} ?`)
+    .then((confirmed) => {
+      if(confirmed){
+
+        let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
+        let url = `${agentUrl}delete/${srv.basepath}`
+        this.backendService.getData( url )
+        .then(resultatRequest => {
+          this.requestResultat = resultatRequest
+          console.log( resultatRequest )
+          this.data.selected = -1
+          this.displayPage()
+        })
+        .catch(error => {
+          console.log( error )
+        })
+        
+      }
+    })
+    .catch(() => {
+      console.log('Error modal')
+    });
+
   }
+
+
+  onEditeMode(editmode){
+    this.editModeSet = editmode
+    this.editModeEmitter.emit( this.editModeSet )
+  }
+
+  
+  onCancelMode(name) {
+    if( name.type == "reload" && this.agentSelected ){
+      this.data.selected = -1
+      this.displayPage()
+    }
+  }
+  
 
 
 

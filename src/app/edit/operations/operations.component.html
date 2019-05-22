@@ -1,0 +1,36 @@
+
+<div class="modal-header">
+  <h4 class="modal-title"> {{title}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  
+  <form [formGroup]="apiOpGroup" >
+    
+    <div class="example-container">
+
+        <div class="form-group">
+          <label for="inputState">Méthode</label>
+          <select placeholder = "Méthode" formControlName="methodCtrl" class="form-control form-control-sm" required>
+              <option *ngFor = "let method of methodOperations" 
+                [value] = "method.name">
+                {{ method.name }}
+              </option>
+          </select>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary" (click)="accept()">{{ btnOkText }}</button>
+
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+</div>

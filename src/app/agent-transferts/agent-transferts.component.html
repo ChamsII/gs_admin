@@ -7,13 +7,13 @@
             <div class="card-header card-header-red">
                 <div class="row header-card-red">
                   <div class="col-10">Transfert(s) and key</div>
-                  <div class="col-2 text-right"> + </div>
+                  <div class="col-2 text-right"> <span class="btnInHeader" (click)="addTransferPropertie()" > <i class="fa fa-plus" aria-hidden="true"></i> </span></div>
                 </div>
             </div>
 
 
-            <div class="card-body" *ngIf="operationSelected" text-wrap >
-                <div class="row" *ngFor="let tps of operationSelected; index as i;">
+            <div class="card-body" *ngIf="transferProperties" text-wrap >
+                <div class="row" *ngFor="let tps of transferProperties; index as i;">
 
                   <div class="col-2">
                       <span class="sDetail">(name)</span> <br /> <span class="text-bold text-normal"> {{ tps.name }} </span>
@@ -27,7 +27,6 @@
                       <span class="sDetail">(path)</span> <br /> <span class="text-normal"> {{ tps.path }} </span>
                   </div>
 
-
                   <div class="col-4 text-normal" >
                       
                     <div class="row" *ngIf="tps.template && tps.template != ''" >
@@ -37,7 +36,7 @@
 
                     <div class="row" *ngIf="tps.isUnique" >
                       <div class="col titleChamp"> <i class="fa fa-object-ungroup" aria-hidden="true"></i> <span class="sDetail">(isUnique)</span> </div>
-                      <div class="col valueChamp"> Unique </div>
+                      <div class="col valueChamp"> <i class="fa fa-check-square-o" aria-hidden="true"></i> </div>
                     </div>
 
                     <div class="row" *ngIf="tps.value && tps.value != '' " >
@@ -47,8 +46,13 @@
 
                     <div class="row" >
                       <div class="col titleChamp"> <i class="fa fa-key" aria-hidden="true"></i> <span class="sDetail">(isKey)</span> </div>
-                      <div class="col valueChamp" *ngIf="tps.isKey"> key </div>
-                      <div class="col valueChamp" *ngIf="!tps.isKey"> not key </div>
+                      <div class="col valueChamp" *ngIf="tps.isKey"> <i class="fa fa-check-square-o" aria-hidden="true"></i> </div>
+                      <div class="col valueChamp" *ngIf="!tps.isKey"> <i class="fa fa-window-close-o" aria-hidden="true"></i> </div>
+                    </div>
+
+                    <div class="row" *ngIf="tps.isFeeder" >
+                      <div class="col titleChamp"> <i class="fa fa-database" aria-hidden="true"></i> <span class="sDetail">(isFeeder)</span> </div>
+                      <div class="col valueChamp"> <i class="fa fa-check-square-o" aria-hidden="true"></i> </div>
                     </div>
 
                     <div class="row" *ngIf="tps.isFeeder" >
@@ -60,7 +64,7 @@
 
 
                   <div class="col-1 text-right">
-                      <button class="btn btn-clear" small (click)="editApi(tps)" >
+                      <button class="btn btn-clear" small (click)="editTransfert(tps)" >
                           <i class="fa fa-pencil" aria-hidden="true"></i>
                       </button>
                   </div>

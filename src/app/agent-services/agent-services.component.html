@@ -1,11 +1,11 @@
 
 
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="!editModeSet || !editModeSet.status" >
   
   <div class="row margin-top-10">
 
     <!-- Liste services  -->
-    <div class="col-lg-6">
+    <div class="col-xl-6">
       
         <div class="row">
 
@@ -16,14 +16,22 @@
               <div class="card-header card-header-red">
                 <div class="row header-card-red">
                   <div class="col-2">Services</div>
-                  <div class="col-8">Search</div>
-                  <div class="col-2"> >> </div>
+                  <div class="col-8">
+                      <div class="md-form mt-0">
+                        <input class="form-control" type="text" aria-label="Search" name="searchString" placeholder="Type to filter..." [(ngModel)]="searchString" >
+                      </div>
+                  </div>
+                  <div class="col-2">
+                    <span class="nbrPerPage">{{data.currentPage}}/{{data.pages}}</span>
+                    <span class="btnInHeader" *ngIf="data.currentPage != 1" (click)="previousPage()" > <i class="fa fa-chevron-left" aria-hidden="true"></i> </span>
+                    <span class="btnInHeader" *ngIf="data.pages != data.currentPage" (click)="nextPage()" > <i class="fa fa-chevron-right" aria-hidden="true"></i> </span>
+                  </div>
                 </div>
               </div>
         
               <div class="card-body">
         
-                <div class="row" *ngFor="let srv of data.services; index as i;">
+                <div class="row" *ngFor="let srv of data.services | filter : 'basepath' : searchString; index as i;">
         
                   <div class="col-9" tappable (click)="onSelectService(srv, i)" [ngClass]="{'serviceActifSelected': srv.status == 1 && data.selected.basepath == srv.basepath, 
                   'serviceActif': srv.status == 1 && data.selected.basepath != srv.basepath, 
@@ -33,7 +41,7 @@
                   </div>
         
                   <div class="col-1">
-                      <button class="btn btn-clear" (click)="editService(srv)" >
+                      <button class="btn btn-clear" (click)="editService(srv, i)" >
                           <i class="fa fa-pencil" aria-hidden="true"></i>
                       </button>
                   </div>
@@ -44,7 +52,7 @@
                       </button>
                   </div>
                   <div class="col-1">
-                    <button class="btn btn-clear" (click)="deleteService(srv)" >
+                    <button class="btn btn-clear" (click)="deleteService(srv, i)" >
                         <i class="fa fa-times text_red" aria-hidden="true"></i>
                     </button>
                   </div>
@@ -61,15 +69,15 @@
     </div>
     <!-- Liste services  -->
 
-    <!-- Apis  -->
-    <div class="col-lg-3">
-        <app-agent-apis [serviceSelect]="data.selected" (apiSelecte)="onApiSelected($event)" ></app-agent-apis>
+    <!-- Apis -->
+    <div class="col-xl-3">
+        <app-agent-apis [serviceSelect]="data.selected" (apiSelecte)="onApiSelected($event)" (editMode)="onEditeMode($event)" ></app-agent-apis>
     </div>
     <!-- Apis  -->
 
-    <!-- Operations  -->
-    <div class="col-lg-3">
-        <app-agent-operations *ngIf="operationSelected" [apiSelect]="operationSelected" (opSelecte)="onOperationSelected($event)"></app-agent-operations>
+    <!-- Operations -->
+    <div class="col-xl-3">
+        <app-agent-operations *ngIf="operationSelected" [serviceSelect]="data.selected" [apiSelect]="apiSelected" (opSelecte)="onOperationSelected($event)"></app-agent-operations>
     </div>
     <!-- Operations  -->
 
@@ -80,14 +88,14 @@
   <!-- New line -->
   <div class="row margin-top-20">
 
-    <!-- Transfert(s) - Key  -->
-    <div class="col-lg-6">
-        <app-agent-transferts *ngIf="transferPropSelected" [operationSelect]="transferPropSelected"></app-agent-transferts>
+    <!-- Transfert(s) - Key -->
+    <div class="col-xl-6">
+        <app-agent-transferts *ngIf="transferPropSelected" [operationSelect]="transferPropSelected" [serviceSelect]="data.selected" [apiSelect]="apiSelected" [opSelect]="oneOpSelected" ></app-agent-transferts>
     </div>
     <!-- Transfert(s) - Key  -->
 
-    <!-- Feeder properties  -->
-    <div class="col-lg-6">
+    <!-- Feeder properties -->
+    <div class="col-xl-6">
       <app-agent-feeders *ngIf="feederPropSelected" [operationSelect]="feederPropSelected" ></app-agent-feeders>
    </div>
     <!--Feeder properties  -->
@@ -100,21 +108,21 @@
   <div class="row margin-top-20">
 
     <!-- Paramèter(s)  -->
-    <div class="col-lg-4">
+    <div class="col-xl-4">
         <app-agent-parameters *ngIf="parametersSelected" [operationSelect]="parametersSelected"></app-agent-parameters>
     </div>
     <!-- Paramèter(s) -->
 
 
     <!-- Propriétés / Règles -->
-    <div class="col-lg-4">
+    <div class="col-xl-4">
         <app-agent-properties *ngIf="regExpKeysOSelected" [operationSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" ></app-agent-properties>
     </div>
     <!-- Propriétés / Règles -->
 
 
      <!-- Dataset -->
-     <div class="col-lg-4">
+     <div class="col-xl-4">
         <app-agent-datasets *ngIf="dataSetsSelected" [dataSetsSelect]="dataSetsSelected" (dtsSelecte)="onSelectDataset($event)" ></app-agent-datasets>
     </div>
     <!-- Dataset -->
@@ -129,14 +137,14 @@
   <div class="row margin-top-20">
 
     <!-- Détail -->
-    <div class="col-lg-4">
+    <div class="col-xl-4">
         <app-agent-details [dataSetKeySelect]="this.dataSet.selected.dataset" [dataSetsSelect]="dataSet.selected.parameters"></app-agent-details>
     </div>
     <!-- Détail -->
 
 
     <!-- Template -->
-    <div class="col-lg-8">
+    <div class="col-xl-8">
         <app-agent-template [templateSelect]="templateSelected" ></app-agent-template>
     </div>
     <!-- Template -->
@@ -144,12 +152,28 @@
   </div>
   <!-- New line -->
 
-
-
-
-
-
-
-
-
 </div>
+
+<!-- 
+   
+-->
+
+<app-agent-edit 
+ *ngIf="editModeSet && editModeSet.status == true" 
+ [templateSelect]="templateSelected" 
+ [dataSetKeySelect]="dataSet.selected.dataset" [detailParameter]="dataSet.selected.parameters" 
+ [dataSetsSelect]="dataSetsSelected" 
+ [propetiesSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" 
+ [parametersSelect]="parametersSelected" 
+ [feederPropSelect]="feederPropSelected" 
+ [transferPropSelect]="transferPropSelected" 
+ [operationSelect]="operationSelected" 
+ [serviceSelect]="data.selected" 
+ (editMode)="onEditeMode($event)" 
+ [editModeSet]="editModeSet" 
+ [agentSelect]="agentSelected" 
+ (cancelMode)="onCancelMode($event)"
+
+>
+</app-agent-edit>
+

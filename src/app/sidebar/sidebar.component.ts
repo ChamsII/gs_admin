@@ -1,6 +1,7 @@
 import { Component, OnInit , EventEmitter , Output, Input } from '@angular/core';
 
 import { BackendService } from '../services/backend.service';
+import { FunctionService } from '../services/function.service'
 
 @Component({
   selector: 'app-sidebar',
@@ -22,7 +23,7 @@ export class SidebarsComponent implements OnInit {
 }
 
 
-  constructor(public backendService: BackendService) { }
+  constructor(public backendService: BackendService , public functionService: FunctionService) { }
 
   ngOnInit() {
 
@@ -37,6 +38,7 @@ export class SidebarsComponent implements OnInit {
   }
 
   agentSelected(agent){
+    this.functionService.setAgentSelect(agent)
     this.selectAgent.emit(agent);
   }
   
@@ -49,8 +51,11 @@ export class SidebarsComponent implements OnInit {
       this.resultRequest = agents;
       this.agentsList = this.resultRequest.agents
 
-      if(this.agentsList.length > 0)
+      if(this.agentsList.length > 0){
+        this.functionService.setAgentSelect( this.agentsList[0] )
         this.selectAgent.emit(this.agentsList[0]);
+      }
+        
     })
     .catch(errors => {
       console.log(errors)

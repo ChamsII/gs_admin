@@ -1,0 +1,108 @@
+
+<div class="modal-header">
+  <h4 class="modal-title"> {{title}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  
+  <form [formGroup]="transfertsGroup" >
+    
+    <div class="example-container">
+
+        <div class="form-group">
+          <label for="tpnameCtrl">Nom transfert </label>
+          <input id="tpnameCtrl" type="text" class="form-control" formControlName="tpnameCtrl" placeholder="Nom transfert " >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+              Nom de la propriété
+            </small>
+        </div>
+
+        <div class="form-group">
+          <label for="tpsourceCtrl">Source </label>
+          <select placeholder = "Type" formControlName="tpsourceCtrl" class="form-control form-control-sm" (change)="selectSourceChangeHandler($event)" >
+              <option *ngFor = "let source of transfProSource" [value] = "source.name" >
+                {{ source.name }}
+              </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="tpargCtrl">Argument</label>
+          <input id="tpargCtrl" type="text" class="form-control" formControlName="tpargCtrl" [placeholder]="transfProFormat.helpMessage" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ transfProFormat.helpMessage }}
+          </small>
+        </div>
+
+        <div class="form-group">
+            <div class="funkyradio">
+              <div class="funkyradio-default">
+                  <input type="checkbox" class="form-control" name="checkbox" id="tpiskeyCtrl" formControlName="tpiskeyCtrl" (change)="checkValueIsKey($event)" />
+                  <label for="tpiskeyCtrl">Clé ? </label>
+              </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tptemplateCtrl">Template</label>
+          <input id="tptemplateCtrl" type="text" class="form-control" formControlName="tptemplateCtrl" [placeholder]="transfProFormat.tplMessage" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ transfProFormat.tplMessage }}
+          </small>
+        </div>
+     
+        <div class="form-group" *ngIf="transfProFormat.showReg" >
+          <div class="funkyradio">
+            <div class="funkyradio-default">
+                <input type="checkbox" class="form-control" name="checkbox" id="tpisuniqCtrl" formControlName="tpisuniqCtrl" (change)="checkValueIsUnique($event)" />
+                <label for="tpisuniqCtrl">Unique ? </label>
+            </div>
+          </div>
+
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ transfProFormat.isUnique }}
+          </small>
+        </div>
+
+        <div class="form-group" *ngIf="transfProFormat.showReg && !checkValue.isUnique " >
+          <label for="tpvalueCtrl">Valeur</label>
+          <input id="tpvalueCtrl" type="text" class="form-control" formControlName="tpvalueCtrl" [placeholder]="transfProFormat.valeurChmp" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ transfProFormat.valeurChmp }}
+          </small>
+        </div>
+
+        <div class="form-group" >
+            <div class="funkyradio">
+              <div class="funkyradio-default">
+                  <input type="checkbox" class="form-control" name="checkbox" id="tpisfeederCtrl" formControlName="tpisfeederCtrl" (change)="checkValueIsFeeder($event)" />
+                  <label for="tpisfeederCtrl">Feeder ? </label>
+              </div>
+            </div>
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ transfProFormat.feederMessage }}
+          </small>
+        </div>
+
+        <div class="form-group" *ngIf="checkValue.isFeeder" >
+          <label for="tpfeedervalueCtrl">Feeder name </label>
+          <input id="tpfeedervalueCtrl" type="text" class="form-control" formControlName="tpfeedervalueCtrl" [placeholder]="transfProFormat.valeurChmp" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            Le nom de la colone dans le fichier CSV
+          </small>
+        </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+</div>

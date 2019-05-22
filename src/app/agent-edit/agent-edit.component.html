@@ -1,0 +1,611 @@
+<div class="container-fluide">
+  
+
+    <div class="row margin-top-10">
+
+
+      <div class="col-xl-10">
+
+          <div class="card">
+        
+              <div class="card-header card-header-red">
+                <div class="row header-card-red">
+                  <div class="col-2">{{titrePage}}</div>
+                </div>
+              </div>
+        
+              <div class="card-body">
+
+                <span class="votreService">Votre service : </span> 
+                <span class="leService">
+                  http:// {{agentSelected.hostname}}:{{agentSelected.admin_port}}/{{nomService}}
+                </span>
+
+                <mat-horizontal-stepper linear #stepper > <!-- [selectedIndex]="selectedIndex" -->
+
+
+                    <mat-step [stepControl]="serviceGroup" errorMessage="All (*) is required." aria-label="Services" >
+                      <form [formGroup]="serviceGroup" novalidate>
+                        <ng-template matStepLabel>Services</ng-template>
+                        
+                        <div class="example-container">
+
+                            <div class="form-group">
+                              <label for="nameapp">Nom de l'application (*)</label>
+                              <input id="nameapp" type="text" class="form-control" formControlName="appnameCtrl" placeholder="Nom de l'application (*)" required >
+                            </div>
+
+                            <div class="form-group">
+                              <label for="servicenameCtrl">Nom du service (*)</label>
+                              <input id="servicenameCtrl" type="text" class="form-control" formControlName="servicenameCtrl" placeholder="Nom du service (*)" required>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="versionCtrl">Version du service</label>
+                              <input id="versionCtrl" type="text" class="form-control" formControlName="versionCtrl" placeholder="Version du service" >
+                            </div>
+
+
+                            <div *ngIf="editModeSeted.mode == 'updateService'" class="row margin-top-10 text-center btn_retourner_warning">
+                              <span class="saveEdite">Enregistrer les modifications</span>
+
+                                <div class="div_green"  (click)="updateNameService()" >
+                                    valider <i class="fa fa-check" aria-hidden="true"></i>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="matBtnPrevNext">
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+
+
+
+                    <mat-step [stepControl]="apiOpGroup" errorMessage="All (*) is required." aria-label="API/ Opérations">
+                      <form [formGroup]="apiOpGroup" >
+                        <ng-template matStepLabel>API/ Opérations</ng-template>
+                        
+                        <div class="example-container">
+
+                            <div class="form-group">
+                              <label for="apiID">Nom de l'API / Opération</label>
+                              <input id="apiID" type="text" class="form-control" formControlName="apiopCtrl" placeholder="Nom de l'API / Opération" required >
+                            </div>
+
+                            <div class="form-group">
+                              <label for="urlID">URI</label>
+                              <input type="text" class="form-control" id="urlID" placeholder="URI" formControlName="urlCtrl" required >
+                            </div>
+
+                            <div class="form-group">
+                              <label for="inputState">Méthode</label>
+                              <select placeholder = "Méthode" formControlName="methodCtrl" class="form-control form-control-sm" required>
+                                  <option *ngFor = "let method of methodOperations" 
+                                    [value] = "method.name">
+                                    {{ method.name }}
+                                  </option>
+                              </select>
+                            </div>
+
+                        </div>
+
+                        <div class="matBtnPrevNext" >
+                          <button mat-button matStepperPrevious>Retourner</button>
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+
+
+                    <mat-step [stepControl]="propertiesGroup" errorMessage="All (*) is required." aria-label="Propriétés">
+                      <form [formGroup]="propertiesGroup" >
+                        <ng-template matStepLabel>Propriétés</ng-template>
+                        
+                        <div class="example-container">
+
+                            <div class="form-group">
+                              <label for="tmpresCtrl">Temps de réponse (ms)</label>
+                              <input id="tmpresCtrl" type="number" class="form-control" formControlName="tmpresCtrl" placeholder="Temps de réponses " required >
+                            </div>
+
+                            <div class="form-group">
+                              <label for="formatCtrl">Format de la réponse</label>
+                              <select placeholder = "Méthode" formControlName="formatCtrl" class="form-control form-control-sm" >
+                                  <option *ngFor = "let format of formatResponse" 
+                                    [value] = "format.name">
+                                    {{ format.name }}
+                                  </option>
+                              </select>
+                            </div>
+
+                        </div>
+
+                        <div class="matBtnPrevNext" >
+                          <button mat-button matStepperPrevious>Retourner</button>
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+
+
+                    <mat-step [stepControl]="parametersFroup" errorMessage="All (*) is required." aria-label="Paramètres">
+                      <form [formGroup]="parametersFroup" >
+                        <ng-template matStepLabel>Paramètres</ng-template>
+                        
+                        <div class="example-container">
+
+                          <div *ngIf="listParameters.length > 0 " > <!--  -->
+                            <div class="row back_green">
+                              <div class="col">Paramètre</div>
+                              <div class="col">Type</div>
+                              <div class="col">Arg1</div>
+                              <div class="col">Arg2</div>
+                              <div class="col">?</div>
+                            </div>
+                            <div class="row" *ngFor="let param of listParameters " >
+                              <div class="col">{{param.name}}</div>
+                              <div class="col">{{param.type}}</div>
+                              <div class="col">{{param.arg}}</div>
+                              <div class="col">{{param.arg2}}</div>
+                              <div class="col">
+                                <button class="btn btn-clear" (click)="deleteParam(param)" >
+                                    <i class="fa fa-times text_red" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <br /><br />
+                          </div>
+
+
+                          <div class="row">
+    
+                            <div class="col form-group">
+                              <label for="nameparamCtrl">Nom du paramètre </label>
+                              <input id="nameparamCtrl" type="text" class="form-control" formControlName="nameparamCtrl" placeholder="Nom du paramètre" >
+                            </div>
+
+
+                            <div class="col form-group">
+                              <label for="typeparamCtrl">Type </label>
+                              <select placeholder = "Type" formControlName="typeparamCtrl" class="form-control form-control-sm" (change)="selectTypeChangeHandler($event)" >
+                                  <option *ngFor = "let type of optionsParam" [value] = "type.name" >
+                                    {{ type.name }}
+                                  </option>
+                              </select>
+                            </div>
+
+
+                            <div class="col form-group">
+                              <label for="arg1paramCtrl">Arg 1 </label>
+                              <input id="arg1paramCtrl" [type]="paramTypeFormat.type" class="form-control" formControlName="arg1paramCtrl" [placeholder]="paramTypeFormat.placeHolder" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ paramTypeFormat.helpMessage }}
+                              </small>
+                            </div>
+
+                     
+
+
+                            <div class="col form-group" *ngIf=" paramTypeFormat.helpMessage2 != '' " >
+                              <label for="arg2paramCtrl">Arg 2 </label>
+                              <input id="arg2paramCtrl" type="text" class="form-control" formControlName="arg2paramCtrl" [placeholder]="paramTypeFormat.placeHolder2" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ paramTypeFormat.helpMessage2 }}
+                              </small>
+                            </div>
+
+                            <div class="col form-group">
+                                <div class="div_blue" (click)="addParam()">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                                </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="matBtnPrevNext" >
+                          <button mat-button matStepperPrevious>Retourner</button>
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+                    <!-- Paramètres-->
+
+                    <!-- Transferts -->
+                    <mat-step [stepControl]="transfertsGroup" errorMessage="All (*) is required." aria-label="Transferts">
+                      <form [formGroup]="transfertsGroup" >
+                        <ng-template matStepLabel>Transferts</ng-template>
+                        
+                        <div class="example-container">
+
+                          <div *ngIf="listeTransfProp.length > 0 " > <!--  -->
+                            <div class="row back_green">
+                              <div class="col">TransfertProp</div>
+                              <div class="col">Source</div>
+                              <div class="col">Argument</div>
+                              <div class="col">Clé?</div>
+                              <div class="col">Template</div>
+                              <div class="col">Unique?</div>
+                              <div class="col">Valeur</div>
+                              <div class="col">Feeder?</div>
+                              <div class="col">Feeder name</div>
+                              <div class="col">?</div>
+                            </div>
+
+
+                            <div class="row" *ngFor="let tps of listeTransfProp " >
+                              <div class="col">{{tps.name}}</div>
+                              <div class="col">{{tps.source}}</div>
+                              <div class="col">{{tps.path}}</div>
+                              <div class="col">
+                                  <i *ngIf="!tps.isKey" class="fa fa-ban" aria-hidden="true"></i>
+                                  <i *ngIf="tps.isKey" class="fa fa-check" aria-hidden="true"></i>
+                              </div>
+                              <div class="col">{{tps.template}}</div>
+                              <div class="col">
+                                  <i *ngIf="!tps.isUnique" class="fa fa-ban" aria-hidden="true"></i>
+                                  <i *ngIf="tps.isUnique" class="fa fa-check" aria-hidden="true"></i>
+                              </div>
+                              <div class="col">{{tps.value}}</div>
+
+                              <div class="col">
+                                  <i *ngIf="!tps.isFeeder" class="fa fa-ban" aria-hidden="true"></i>
+                                  <i *ngIf="tps.isFeeder" class="fa fa-check" aria-hidden="true"></i>
+                              </div>
+                              <div class="col">{{tps.feederName}}</div>
+
+                              <div class="col">
+                                <button class="btn btn-clear" (click)="deleteTransfPro(tps)" >
+                                    <i class="fa fa-times text_red" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <br /><br />
+                          </div>
+    
+                            <div class="form-group">
+                              <label for="tpnameCtrl">Nom transfert </label>
+                              <input id="tpnameCtrl" type="text" class="form-control" formControlName="tpnameCtrl" placeholder="Nom transfert " >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                  Nom de la propriété
+                                </small>
+                            </div>
+
+
+                            <div class="form-group">
+                              <label for="tpsourceCtrl">Source </label>
+                              <select placeholder = "Type" formControlName="tpsourceCtrl" class="form-control form-control-sm" (change)="selectSourceChangeHandler($event)" >
+                                  <option *ngFor = "let source of transfProSource" [value] = "source.name" >
+                                    {{ source.name }}
+                                  </option>
+                              </select>
+                            </div>
+
+
+                            <div class="form-group">
+                              <label for="tpargCtrl">Argument</label>
+                              <input id="tpargCtrl" type="text" class="form-control" formControlName="tpargCtrl" [placeholder]="transfProFormat.helpMessage" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ transfProFormat.helpMessage }}
+                              </small>
+                            </div>
+
+                            
+                            <div class="form-group">
+                                <div class="funkyradio">
+                                  <div class="funkyradio-default">
+                                      <input type="checkbox" class="form-control" name="checkbox" id="tpiskeyCtrl" formControlName="tpiskeyCtrl" (change)="checkValueIsKey($event)" />
+                                      <label for="tpiskeyCtrl">Clé ? </label>
+                                  </div>
+                                </div>
+                              <!--<label for="tpiskeyCtrl">Clé?</label>
+                              <input id="tpiskeyCtrl" type="checkbox" class="form-control" formControlName="tpiskeyCtrl" (change)="checkValueIsKey($event)" >-->
+                            </div>
+
+                            <div class="form-group">
+                              <label for="tptemplateCtrl">Template</label>
+                              <input id="tptemplateCtrl" type="text" class="form-control" formControlName="tptemplateCtrl" [placeholder]="transfProFormat.tplMessage" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ transfProFormat.tplMessage }}
+                              </small>
+                            </div>
+
+                         
+                            <div class="form-group" *ngIf="transfProFormat.showReg" >
+                              <div class="funkyradio">
+                                <div class="funkyradio-default">
+                                    <input type="checkbox" class="form-control" name="checkbox" id="tpisuniqCtrl" formControlName="tpisuniqCtrl" (change)="checkValueIsUnique($event)" />
+                                    <label for="tpisuniqCtrl">Unique ? </label>
+                                </div>
+                              </div>
+
+                              <!-- <input id="tpisuniqCtrl" type="checkbox" class="form-control" formControlName="tpisuniqCtrl" (change)="checkValueIsUnique($event)" > -->
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ transfProFormat.isUnique }}
+                              </small>
+                            </div>
+
+                            <div class="form-group" *ngIf="transfProFormat.showReg && !checkValue.isUnique " >
+                              <label for="tpvalueCtrl">Valeur</label>
+                              <input id="tpvalueCtrl" type="text" class="form-control" formControlName="tpvalueCtrl" [placeholder]="transfProFormat.valeurChmp" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ transfProFormat.valeurChmp }}
+                              </small>
+                            </div>
+
+
+                            <div class="form-group" >
+                                <div class="funkyradio">
+                                  <div class="funkyradio-default">
+                                      <input type="checkbox" class="form-control" name="checkbox" id="tpisfeederCtrl" formControlName="tpisfeederCtrl" (change)="checkValueIsFeeder($event)" />
+                                      <label for="tpisfeederCtrl">Feeder ? </label>
+                                  </div>
+                                </div>
+                              <!--<label for="tpisfeederCtrl">Feeder?</label>
+                              <input id="tpisfeederCtrl" type="checkbox" class="form-control" formControlName="tpisfeederCtrl" (change)="checkValueIsFeeder($event)" > -->
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ transfProFormat.feederMessage }}
+                              </small>
+                            </div>
+
+                            <div class="form-group" *ngIf="checkValue.isFeeder" >
+                              <label for="tpfeedervalueCtrl">Feeder name </label>
+                              <input id="tpfeedervalueCtrl" type="text" class="form-control" formControlName="tpfeedervalueCtrl" [placeholder]="transfProFormat.valeurChmp" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                Le nom de la colone dans le fichier CSV
+                              </small>
+                            </div>
+
+                          <div class="row">
+                            <div class="col form-group">
+                                <div class="div_blue" (click)="addTransfert()">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                                </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="matBtnPrevNext" >
+                          <button mat-button matStepperPrevious>Retourner</button>
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+                    <!-- Transferts -->
+
+                    <!-- Clés et règles -->
+                    <mat-step [stepControl]="keysRulesGroup" errorMessage="All (*) is required." aria-label="Clés et règles">
+                        <form [formGroup]="keysRulesGroup" >
+                            <ng-template matStepLabel>Clés et règles</ng-template>
+                            <div class="example-container">
+
+                              <div class="row">
+                                <div class="col">
+                                  <div class="row titreCaegorie"> Ordre de la clé </div>
+
+                                  <div cdkDropList class="example-list" (cdkDropListDropped)="reorderKey($event)">
+                                    <div class="example-box" *ngFor="let lstk of listeKey" cdkDrag>{{lstk.name}}</div>
+                                  </div>
+
+                                  <div class="listeRorder" >
+                                    <div class="row">
+                                      <div class="col-4 titreL">Clé(s) du service</div>
+                                      <div class="detailL">
+                                        <span *ngFor="let lsto of listeKey"> {{lsto.name}} . </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                    
+                                </div>
+                                <div class="col">
+
+                                    <div class="row titreCaegorie"> Création des règles  </div>
+
+                                    <div *ngIf="listRulesKeys.length > 0 "  > <!--  -->
+                                      <div class="row back_green">
+                                        <div class="col">Règle (RegExp)</div>
+                                        <div class="col">Jeux de données cible</div>
+                                        <div class="col">?</div>
+                                      </div>
+
+                                      <div class="row" *ngFor="let rule of listRulesKeys " >
+                                        <div class="col">{{rule.regle}}</div>
+                                        <div class="col">{{rule.target}}</div>
+                                        <div class="col">
+                                          <button class="btn btn-clear" (click)="deleteRules(rule)" >
+                                              <i class="fa fa-times text_red" aria-hidden="true"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                      <br /><br />
+                                    </div>
+
+                                    <div class="row">
+    
+                                        <div class="col form-group">
+                                          <label for="regleCtrl">Règle (RegExp) </label>
+                                          <input id="regleCtrl" type="text" class="form-control" formControlName="regleCtrl" placeholder="Règle (RegExp)" >
+                                        </div>
+
+                                        <div class="col form-group">
+                                          <label for="targetCtrl">Jeux de données cible</label>
+                                          <input id="targetCtrl" type="text" class="form-control" formControlName="targetCtrl" placeholder="Jeux de données cible" >
+                                        </div>
+
+                                        <div class="col form-group">
+                                            <div class="div_blue" (click)="addRules()">
+                                                <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="matBtnPrevNext" >
+                              <button mat-button matStepperPrevious>Retourner</button>
+                              <button mat-button matStepperNext>Valider et continuer</button>
+                            </div>
+
+                        </form>
+                    </mat-step>
+                    <!-- Clés et règles -->
+
+                    <!-- Feeders properties -->
+                    <mat-step [stepControl]="feedersGroup" errorMessage="All (*) is required." aria-label="Feeder(s)">
+                      <form [formGroup]="feedersGroup" >
+                        <ng-template matStepLabel>Feeder(s)</ng-template>
+                        
+                        <div class="example-container">
+
+                          <div *ngIf="listFeeders.length > 0 " > <!--  -->
+                            <div class="row back_green">
+                              <div class="col">Csv File</div>
+                              <div class="col">Type template response</div>
+                              <div class="col">isRandom?</div>
+                              <div class="col">Value</div>
+                              <div class="col">?</div>
+                            </div>
+
+                            <div class="row" *ngFor="let lfd of listFeeders " >
+                              <div class="col">{{lfd.csvFile}}</div>
+                              <div class="col">{{lfd.type}}</div>
+                              <div class="col">
+                                  <div class="col">{{lfd.isRandom}}</div>
+                              </div>
+                              <div class="col">{{lfd.value}}</div>
+
+                              <div class="col">
+                                <button class="btn btn-clear" (click)="deleteFeeder(lfd)" >
+                                    <i class="fa fa-times text_red" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <br /><br />
+                          </div>
+
+                          <div class="row">
+    
+                            <div class="col form-group">
+                              <label for="csvFileCtrl">Csv File</label>
+                              <input id="csvFileCtrl" type="text" class="form-control" formControlName="csvFileCtrl" placeholder="Nom du fichier de données jdd.csv" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                Nom du fichier de données jdd.csv
+                              </small>
+                            </div>
+
+
+                            <div class="col form-group">
+                              <label for="typeCtrl">Source </label>
+                              <select placeholder = "Type" formControlName="typeCtrl" class="form-control form-control-sm" >
+                                  <option value="XML" > XML </option>
+                                  <option value="JSON" > JSON </option>
+                              </select>
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                Type template response JSON/XML
+                              </small>
+                            </div>
+
+                            <div class="col form-group">
+                              <label for="isRandomCtrl">isRandom</label>
+                              <input id="isRandomCtrl" type="number" class="form-control" formControlName="isRandomCtrl" placeholder="Numéro de ligne dans le fichier JDD à lire. 0 Par defaut" >
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                Numéro de ligne dans le fichier JDD à lire. 0 pour random ou passage en paramètre
+                              </small>
+                            </div>
+
+                          </div>
+
+                          <div class="row">
+                            <div class="col-10 form-group">
+                              <label for="valueCtrl">Valeur</label>
+                              <input id="valueCtrl" type="hidden" class="form-control" formControlName="valueCtrl" placeholder="Un tableau d'objet">
+                              
+                              <div ace-editor
+                                [(text)]="textFeederValue"
+                                [mode]="modeSelected"
+                                [theme]="themeSelected"
+                                [readOnly]="false"
+                                [autoUpdateContent]="true"
+                                [durationBeforeCallback]="1000" 
+                                (textChanged)="onChangeValueFeeder($event)"
+                                style="height: 100%; width:100%; overflow-x: auto; min-height: 100px;">
+                              </div>
+                              
+                              <small id="passwordHelpBlock" class="form-text text-muted">
+                                {{ tabObjectFeeder }}
+                              </small>
+                            </div>
+
+                            <div class="col-2 form-group">
+                                <div class="div_blue" (click)="addFeeder()">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter
+                                </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                        <div class="matBtnPrevNext" >
+                          <br />
+                          <button mat-button matStepperPrevious>Retourner</button>
+                          <button mat-button matStepperNext>Valider et continuer</button>
+                        </div>
+                      </form>
+                    </mat-step>
+                    <!-- Feeders properties -->
+
+                  <mat-step>
+                    <ng-template matStepLabel>Valider</ng-template>
+
+                    <div class="termiser">
+                        <div class="btnterminer div_blue" (click)="majService()">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> {{labelBtnValide}}
+                        </div>
+                    </div>
+
+                    <div class="matBtnPrevNext" >
+                      <button mat-button matStepperPrevious>Retourner</button>
+                    </div>
+                  </mat-step>
+
+                </mat-horizontal-stepper>
+
+
+              <div>
+
+           </div>
+
+      </div>
+
+      <div class="col-xl-2 recap">
+
+      </div>
+
+    </div>
+
+
+    <div class="row margin-top-10 text-center btn_retourner_warning">
+        <a class="nav-link Retourner_warning" href="#" (click)="canclelMode()" > 
+          <i class="fa fa-ban" aria-hidden="true"></i>
+          Quitter
+        </a>
+    </div>
+
+    
+
+</div>

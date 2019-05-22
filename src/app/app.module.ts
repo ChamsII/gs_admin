@@ -1,7 +1,52 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
+//import {MatStepperModule} from '@angular/material/stepper'; 
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr'; 
+
+import { MatIconModule } from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field'; 
+import {MatInputModule} from '@angular/material/input'
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatDialogModule} from '@angular/material/dialog'; 
+
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatStepperModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  //MatFormFieldModule,
+  //MatInputModule,
+  MatOptionModule
+} from '@angular/material';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -24,6 +69,18 @@ import { AgentPropertiesComponent } from './agent-properties/agent-properties.co
 import { AgentDetailsComponent } from './agent-details/agent-details.component';
 import { AgentDatasetsComponent } from './agent-datasets/agent-datasets.component';
 import { AgentTemplateComponent } from './agent-template/agent-template.component';
+import { AgentEditComponent } from './agent-edit/agent-edit.component';
+import { AlertConfirmComponent } from './modal/alert-confirm/alert-confirm.component';
+import { ConfirmationDialogService } from './modal/alert-confirm/alert-confirm.service';
+import { FilterPipe } from './filter.pipe';
+import { ApisComponent } from './edit/apis/apis.component';
+import { ApisService } from './edit/apis/apis.service';
+import { FunctionService } from './services/function.service';
+import { EventsService } from './services/events.service';
+import { OperationsComponent } from './edit/operations/operations.component';
+import { OperationsService } from './edit/operations/operations.service';
+import { TransfertsComponent } from './edit/transferts/transferts.component';
+import { TransfertsService } from './edit/transferts/transferts.service';
 
 
 @NgModule({
@@ -41,7 +98,13 @@ import { AgentTemplateComponent } from './agent-template/agent-template.componen
     AgentPropertiesComponent,
     AgentDetailsComponent,
     AgentDatasetsComponent,
-    AgentTemplateComponent
+    AgentTemplateComponent,
+    AgentEditComponent,
+    AlertConfirmComponent,
+    FilterPipe,
+    ApisComponent,
+    OperationsComponent,
+    TransfertsComponent
   ],
   imports: [
     BrowserModule,
@@ -50,9 +113,66 @@ import { AgentTemplateComponent } from './agent-template/agent-template.componen
     AngularFontAwesomeModule,
     HttpClientModule,
     FormsModule,
-    AceEditorModule
+    AceEditorModule,
+    MatStepperModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule,
+    MatIconModule,
+    MatToolbarModule, 
+    MatCardModule,
+    DragDropModule,
+
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatStepperModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatOptionModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton: true,
+    }) 
+
+    
   ],
-  providers: [BackendService ],
+  entryComponents: [
+    AlertConfirmComponent,
+    ApisComponent,
+    OperationsComponent,
+    TransfertsComponent
+  ],
+  providers: [BackendService , ConfirmationDialogService , ApisService , FunctionService , OperationsService , EventsService , TransfertsService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
