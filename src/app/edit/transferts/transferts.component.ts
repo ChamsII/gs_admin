@@ -51,12 +51,7 @@ export class TransfertsComponent implements OnInit {
   }
 
   ngAfterContentInit() {
-    console.log( this.serviceSelect )
-    console.log( this.opSelect )
-    console.log( this.etatOpen )
-    console.log( this.apiSelect )
-    console.log( this.tpsSelect )
-    
+
     if( this.etatOpen == "new" ){
       this.title = "Ajouter un transfert properties "
     }else{
@@ -113,7 +108,6 @@ export class TransfertsComponent implements OnInit {
   }
 
   initTransfert(){
-
     let transfert = this.functionService.initTransfertProperties( this.tpsSelect )
     transfert.name = this.transfertsGroup.controls['tpnameCtrl'].value
     transfert.source = this.transfertsGroup.controls['tpsourceCtrl'].value
@@ -125,7 +119,6 @@ export class TransfertsComponent implements OnInit {
     transfert.isFeeder = this.transfertsGroup.controls['tpisfeederCtrl'].value
     transfert.feederName = this.transfertsGroup.controls['tpfeedervalueCtrl'].value
     return transfert
-
   }
 
   updateTransfert(){
@@ -192,7 +185,7 @@ export class TransfertsComponent implements OnInit {
 
     this.backendService.postData( url , this.opSelect )
     .then(resultatRequest => {
-      this.backendService.successmsg( `API [${this.apiSelect.name}] TP [${this.transfertsGroup.controls['tpnameCtrl'].value}] ajouté ` )
+      this.backendService.successmsg( `API [${this.apiSelect.name}] TP [${this.transfertsGroup.controls['tpnameCtrl'].value}] enregistré ` )
       this.activeModal.close({status: true , service: resultatRequest });
     })
     .catch(error => {

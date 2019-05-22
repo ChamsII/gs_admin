@@ -1,4 +1,4 @@
-import { Component, OnInit , Input , EventEmitter , Output } from '@angular/core';
+import { Component, OnInit , Input } from '@angular/core';
 
 import { FunctionService } from '../services/function.service'
 import { BackendService } from '../services/backend.service'
@@ -85,6 +85,51 @@ export class AgentTransfertsComponent implements OnInit {
       if(confirmed.status){
         this.serviceSelected = confirmed.service
         this.eventsService.setApiSelect( this.serviceSelected.apis[0] )
+      }
+    })
+    .catch(() => {
+    });
+
+  }
+
+
+  deleteTransfert(tps){
+
+    this.confirmationDialogService.confirm('', `Etes-vous sur de vouloir supprimer ce TP [${tps.name}] ?`)
+    .then((confirmed) => {
+      if(confirmed){
+
+        for(var id in this.opSelected.transferProperties){
+          if(this.opSelected.transferProperties[id].name == tps.name ){
+            this.opSelected.transferProperties.splice(id, 1);
+            break;
+          }
+        }
+
+        for(var id in this.opSelected.keys){
+          if(this.opSelected.keys[id] == tps.name){
+            this.opSelected.keys.splice(id, 1);
+            break;
+          }
+        }
+
+        let agentUrl = "http://" + this.functionService.getAgentSelect().hostname + ":" + this.functionService.getAgentSelect().admin_port + '/'
+        let url = `${agentUrl}${this.serviceSelected.basepath}/${this.apiSelectedOperations.name}/${this.opSelected.method}`
+
+        this.backendService.postData( url , this.opSelected )
+        .then(resultatRequest => {
+          if( resultatRequest.status == 500) {
+            this.backendService.errorsmsg( resultatRequest.error )
+          }else {
+            this.backendService.successmsg( `API [${this.apiSelectedOperations.name}] - TP [${tps.name}] supprimé ` )
+            this.serviceSelected = resultatRequest
+            this.eventsService.setApiSelect( this.serviceSelected.apis[0] )
+          }
+        })
+        .catch(error => {
+          this.backendService.errorsmsg( error.message )
+        })
+        
       }
     })
     .catch(() => {

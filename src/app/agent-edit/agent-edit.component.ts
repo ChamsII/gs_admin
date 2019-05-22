@@ -126,7 +126,7 @@ export class AgentEditComponent implements OnInit {
     this.feedersGroup = this._formBuilder.group({
       csvFileCtrl: [''],
       valueCtrl: [''],
-      typeCtrl: ['XML'],
+      typeCtrl: ['xml'],
       isRandomCtrl: ['0']
     });
 
@@ -439,7 +439,7 @@ export class AgentEditComponent implements OnInit {
         idFeeder: this.listFeeders.length + 1,
         csvFile: this.feedersGroup.controls['csvFileCtrl'].value,
         type: this.feedersGroup.controls['typeCtrl'].value,
-        value: this.feedersGroup.controls['valueCtrl'].value,
+        value: JSON.parse( this.feedersGroup.controls['valueCtrl'].value),
         isRandom: this.feedersGroup.controls['isRandomCtrl'].value
       }
 
@@ -454,7 +454,7 @@ export class AgentEditComponent implements OnInit {
       this.feedersGroup.patchValue( {
         isRandomCtrl: '0',
         valueCtrl: '',
-        typeCtrl: 'XML',
+        typeCtrl: 'xml',
         csvFileCtrl: ''
       } )
 

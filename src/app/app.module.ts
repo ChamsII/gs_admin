@@ -81,6 +81,9 @@ import { OperationsComponent } from './edit/operations/operations.component';
 import { OperationsService } from './edit/operations/operations.service';
 import { TransfertsComponent } from './edit/transferts/transferts.component';
 import { TransfertsService } from './edit/transferts/transferts.service';
+import { FeedersComponent } from './edit/feeders/feeders.component';
+import { FeedersService } from './edit/feeders/feeders.service';
+import { ParametersComponent } from './edit/parameters/parameters.component';
 
 
 @NgModule({
@@ -104,7 +107,9 @@ import { TransfertsService } from './edit/transferts/transferts.service';
     FilterPipe,
     ApisComponent,
     OperationsComponent,
-    TransfertsComponent
+    TransfertsComponent,
+    FeedersComponent,
+    ParametersComponent
   ],
   imports: [
     BrowserModule,
@@ -170,9 +175,10 @@ import { TransfertsService } from './edit/transferts/transferts.service';
     AlertConfirmComponent,
     ApisComponent,
     OperationsComponent,
-    TransfertsComponent
+    TransfertsComponent,
+    FeedersComponent
   ],
-  providers: [BackendService , ConfirmationDialogService , ApisService , FunctionService , OperationsService , EventsService , TransfertsService ],
+  providers: [BackendService , ConfirmationDialogService , ApisService , FunctionService , OperationsService , EventsService , TransfertsService , FeedersService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

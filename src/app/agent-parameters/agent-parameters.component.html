@@ -12,8 +12,8 @@
             </div>
 
 
-            <div class="card-body" *ngIf="operationSelected" text-wrap >
-                <div class="row" *ngFor="let prs of operationSelected; index as i;">
+            <div class="card-body" *ngIf="parametersSelected" text-wrap >
+                <div class="row" *ngFor="let prs of parametersSelected; index as i;">
 
                   <div class="col-3">
                       <span class="sDetail">(name)</span> <br /> <span class="text-bold text-normal"> {{ prs.name }} </span>

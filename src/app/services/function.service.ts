@@ -180,6 +180,22 @@ export class FunctionService {
   }
 
 
+  initFeeder(feeder?){
+    return {
+      idFeeder: feeder.idFeeder ? feeder.idFeeder : 0 ,
+      csvFile: feeder.csvFile ? feeder.csvFile : "",
+      type: feeder.type ? feeder.type : "",
+      value: feeder.value ? feeder.value : "",
+      isRandom: feeder.isRandom ? feeder.isRandom : 0
+    }
+  }
+
+  getFeederValue(feeders){
+    let start_string = feeders.substring(1)
+    return [start_string.substring(0, feeders.length -2) ]
+  }
+
+
 successmsg(message){  
     this.toastr.success(message,'Success')  
 }  
