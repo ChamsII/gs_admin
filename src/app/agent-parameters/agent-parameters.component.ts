@@ -4,7 +4,7 @@ import { FunctionService } from '../services/function.service'
 import { BackendService } from '../services/backend.service'
 import { EventsService } from '../services/events.service'
 import { ConfirmationDialogService } from '../modal/alert-confirm/alert-confirm.service';
-import { TransfertsService } from '../edit/transferts/transferts.service';
+import { ParametersService } from '../edit/parameters/parameters.service';
 
 @Component({
   selector: 'app-agent-parameters',
@@ -20,7 +20,7 @@ export class AgentParametersComponent implements OnInit {
 
   constructor( public backendService: BackendService ,
     public functionService: FunctionService , public confirmationDialogService: ConfirmationDialogService,
-    public eventsService: EventsService , public transfertsService: TransfertsService ) { }
+    public eventsService: EventsService , public parametersService: ParametersService ) { }
 
   ngOnInit() {
   }
@@ -59,6 +59,72 @@ export class AgentParametersComponent implements OnInit {
       this.opSelected = name;
     }
   }
+
+  editParameters(param){
+
+    this.parametersService.confirm(this.serviceSelected, this.apiSelectedOperations, this.opSelected, "edit", param)
+    .then((confirmed) => {
+      if(confirmed.status){
+        this.serviceSelected = confirmed.service
+        this.eventsService.setApiSelect( this.serviceSelected.apis[0] )
+      }
+    })
+    .catch(() => {
+    });
+
+  }
+
+  addParameters(){
+    
+    this.parametersService.confirm(this.serviceSelected, this.apiSelectedOperations, this.opSelected, "new", "")
+    .then((confirmed) => {
+      if(confirmed.status){
+        this.serviceSelected = confirmed.service
+        this.eventsService.setApiSelect( this.serviceSelected.apis[0] )
+      }
+    })
+    .catch(() => {
+    });
+
+  }
+
+  deleteParameters(param){
+
+    this.confirmationDialogService.confirm('', `Etes-vous sur de vouloir supprimer ce PARAM [${param.name}] ?`)
+    .then((confirmed) => {
+      if(confirmed){
+
+        for(var id in this.opSelected.parameters){
+          if(this.opSelected.parameters[id].name == param.name ){
+            this.opSelected.parameters.splice(id, 1);
+            break;
+          }
+        }
+
+        let agentUrl = "http://" + this.functionService.getAgentSelect().hostname + ":" + this.functionService.getAgentSelect().admin_port + '/'
+        let url = `${agentUrl}${this.serviceSelected.basepath}/${this.apiSelectedOperations.name}/${this.opSelected.method}`
+
+        this.backendService.postData( url , this.opSelected )
+        .then(resultatRequest => {
+          if( resultatRequest.status == 500) {
+            this.backendService.errorsmsg( resultatRequest.error )
+          }else {
+            this.backendService.successmsg( `API [${this.apiSelectedOperations.name}] - PARAM [${param.name}] supprimé ` )
+            this.serviceSelected = resultatRequest
+            this.eventsService.setApiSelect( this.serviceSelected.apis[0] )
+          }
+        })
+        .catch(error => {
+          this.backendService.errorsmsg( error.message )
+        })
+        
+      }
+    })
+    .catch(() => {
+    });
+
+  }
+
 
 
 

@@ -196,6 +196,91 @@ export class FunctionService {
   }
 
 
+  setParamTypeFormat( type ){
+
+    if ( type == 'DATE') {
+      return {
+        helpMessage: 'Format de date. Exemple: yyyy-mm-dd.',
+        patternCheck: '^[\w-_.]*$',
+        placeHolder: 'yyyy-mm-dd',
+        helpMessage2: '',
+        placeHolder2: '',
+        type: 'date'
+      }
+
+    }else if ( type == 'COUNTER') {
+      return {
+        helpMessage: 'Valeur de départ du compteur.',
+        patternCheck: '^[0-9]*$',
+        placeHolder: '0',
+        helpMessage2: '',
+        placeHolder2: '',
+        type: 'number'
+      }
+
+    }else if ( type == 'RANDOM_NUMERIC') {
+      return {
+        helpMessage: 'Longueur du nombre à générer.',
+        patternCheck: '^[0-9]*$',
+        placeHolder: '5',
+        helpMessage2: '',
+        placeHolder2: '',
+        type: 'number'
+      }
+    }else if ( type == 'RANDOM_ALPHANUM') {
+      return {
+        helpMessage: 'Longueur de la chaine à générer.',
+        patternCheck: '^[0-9]*$',
+        placeHolder: '5',
+        helpMessage2: 'Liste des caractères: ABCD12981add',
+        placeHolder2: 'ABCDEFGHIJKLMNOPQRSTUVWXZ',
+        type: 'text'
+      }
+    }
+
+  }
+
+  initParameters( parameters? ){
+    return {
+      idParam: parameters.idParam ? parameters.idParam : 0,
+      name: parameters.name ? parameters.name : "",
+      type: parameters.type ? parameters.type : "",
+      arg: parameters.arg ? parameters.arg : "",
+      arg2: parameters.arg2 ? parameters.arg2 : ""
+    }
+  }
+
+  getResponseInitProperties(responseType){
+    let first_ = responseType.split(";")
+    return first_[0].split("/")[1]
+  }
+
+  initProperties(properties?){
+    return {
+      responseType: properties.responseType ? this.getResponseInitProperties(properties.responseType) : "XML" ,
+      delay: properties.delay ? properties.delay : 0,
+    }
+  }
+
+  initCleRegle(reglekey?){
+    return {
+      regle: reglekey.regle ? reglekey.regle : "",
+      target: reglekey.target ? reglekey.target : "",
+    }
+  }
+
+  getDatsetValue(dataset){
+    return dataset.split("-")[1]
+  }
+
+  getDetailDataset(dataset){
+    return dataset.split(".")[0]
+  }
+
+
+
+
+
 successmsg(message){  
     this.toastr.success(message,'Success')  
 }  
@@ -263,7 +348,6 @@ RemoveNodeInArrayRules(rule, array_data) {
 getListeKey(array_key) {
     let keys = []
     array_key.forEach(function(element) {
-        console.log(element.name);
         keys.push(element.name) 
     });
     return keys
@@ -303,6 +387,27 @@ getAgentSelect(){
   return this.agentSelected
 }
 
+
+
+getAgent(agent_list, id_agent){
+  for(var indice in agent_list){
+    if(agent_list[indice].id == id_agent){
+      return agent_list[indice];
+    }
+  }
+
+  return agent_list[0]
+}
+
+
+getFormatText(){
+  return [
+    {id: 1, name: "xml", value: "application/xml" },
+    {id: 2, name: "json", value: "application/json"},
+    {id: 3, name: "text", value: "text/plain"},
+    {id: 3, name: "html", value: "text/html"}
+  ]
+}
 
 
 }

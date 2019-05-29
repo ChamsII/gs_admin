@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <h4 class="modal-title"> Template - {{dataSetsDetail.template}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="modeSelect('xml')">
+    <span aria-hidden="true">Xml</span>
+  </button>
+  <button type="button" class="close" aria-label="Close" (click)="modeSelect('json')">
+    <span aria-hidden="true">Json</span>
+  </button>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+<div class="modal-body">
+
+  <div class="row">
+    <div class="col-2">
+
+      <div class="row titleText">
+        Transfert propertiies
+      </div>
+      <div class="row">
+        <div *ngFor="let tpr of opSelect.transferProperties; index as i;" class="col">
+            <button (click)="setTransfert(tpr)" type="button" class="btn btn-light"> {{tpr.name}} </button>
+        </div>
+      </div>
+
+      <div class="row titleText">
+          Parameters
+        </div>
+        <div class="row">
+          <div *ngFor="let prs of opSelect.parameters; index as i;" class="col">
+              <button (click)="setParam(prs)" type="button" class="btn btn-light"> {{prs.name}} </button>
+          </div>
+        </div>
+
+    </div>
+    <div class="col-10">
+
+        <ace-editor 
+        #editor
+        [(text)]="templateSelected"
+        [mode]="modeSelected"
+        [theme]="themeSelected"
+        [options]="options"
+        [readOnly]="false"
+        [autoUpdateContent]="true"
+        [durationBeforeCallback]="1000" 
+        (textChanged)="onChange($event)" 
+        (blur)="onEditorBlur($event)" (focus)="onEditorFocus($event)" 
+        style="height: 100%; width:100%; overflow-x: auto; min-height: 500px;">
+      </ace-editor>
+    
+<!--     <ace 
+      fxFlex="auto" 
+      [config]="config" 
+      [disabled]="disabled" 
+      (blur)="onEditorBlur($event)" 
+      (focus)="onEditorFocus($event)" 
+      (valueChange)="onValueChange($event)" 
+      (selectionChange)="onSelectionChange($event)" 
+      [(value)]="templateSelected">
+      </ace> -->
+
+
+
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+</div>

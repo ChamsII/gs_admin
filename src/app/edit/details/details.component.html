@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title"> {{title}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  
+  <form [formGroup]="detailsFroup" >
+    
+    <div class="example-container">
+
+      <div class="row">
+        <div class="col form-group">
+          <label for="tplnameCtrl">Nom Template </label>
+          <input id="tplnameCtrl" type="text" class="form-control" formControlName="tplnameCtrl" placeholder="Nom du paramètre" readonly >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col form-group">
+          <label for="delayCtrl">Delay (ms)</label>
+          <input id="delayCtrl" type="number" class="form-control" formControlName="delayCtrl" placeholder="Delay (ms)" required >
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="" class="btn btn-primary" (click)="updateDetail()">{{ btnOkText }} </button>
+</div>

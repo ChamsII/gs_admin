@@ -1,0 +1,267 @@
+<div class="container-fluid">
+
+    <div class="row margin-top-20 text-center btn_retourner_warning">
+        <a class="" href="#" (click)="canclelMode()" > 
+          <i class="fa fa-ban" aria-hidden="true"></i>
+          Quitter
+        </a>
+    </div>  
+
+    <form [formGroup]="testGenerationGroup" >
+
+      <!--<div class="row margin-top-20">
+          <div class="col-xl-2">
+            Agents Gene&Sis
+          </div>
+          <div class="col-xl-10">
+            <div class="form-group">
+              <select placeholder = "Agent Gene & Sis " formControlName="agentGeneSistrl" class="form-control form-control-sm" (change)="selectAgentChangeHandler($event)" >
+                  <option *ngFor = "let agent of agentsGenesis" 
+                    [value] = "agent.id">
+                    {{ agent.name }} : http://{{agent.hostname}}:{{agent.agent_port}}/
+                  </option>
+              </select>
+            </div>
+        </div>
+      </div> -->
+
+
+    <div class="row margin-top-20">
+
+        <!-- methods  -->
+        <div class="col-xl-1">
+            <div class="form-group">
+              <select placeholder = "Méthode" formControlName="methodCtrl" class="form-control form-control-sm" (change)="selectMethodChangeHandler($event)"  required>
+                  <option *ngFor = "let method of methodOperations" 
+                    [value] = "method.name">
+                    {{ method.name }}
+                  </option>
+              </select>
+            </div>
+
+        </div>
+
+        <!-- url -->
+        <div class="col-xl-9">
+
+            <div class="input-group mb-3">
+              <input aria-describedby="basic-addon2" id="urlapuCtrl" type="text" class="form-control" formControlName="urlapuCtrl" placeholder="Url de l'API" required >
+              <div class="input-group-append" (click)="selectAgent()" >
+                <span class="input-group-text btn-select-agent" id="basic-addon2">Sélectionner un service Gene&Sis</span>
+              </div>
+            </div>
+          
+        </div>
+
+        <!-- send -->
+        <div class="col-xl-1" (click)="runTest()"  >
+
+            <div class="div_blue">
+                <i class="fa fa-check" aria-hidden="true"></i> Send
+            </div>
+          
+        </div>
+
+        <!-- save -->
+        <div class="col-xl-1" (click)="saveTest()" >
+
+            <div class="div_green">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+            </div>
+          
+        </div>
+
+    </div>
+
+    <div class="row margin-top-20">
+      <div class="col-xl-12">
+          <ngb-tabset [justify]="currentJustify">
+
+            <ngb-tab title="Autorization">
+              <ng-template ngbTabContent>
+
+                <div class="titleSub"> Authentification Type Basic Auth </div>
+
+                <div class="row">
+                  <div class="col-xl-4">&nbsp;</div>
+                  <div class="col-xl-4">
+                      <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="authUserCtrl">Username</span>
+                        </div>
+                        <input id="authUserCtrl" type="text" class="form-control" formControlName="authUserCtrl" placeholder="Username" >
+                      </div>
+                  </div>
+                  <div class="col-xl-4">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4">&nbsp;</div>
+                  <div class="col-xl-4">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="authPasswordCtrl">Mot de passe</span>
+                      </div>
+                      <input id="authPasswordCtrl" type="password" class="form-control" formControlName="authPasswordCtrl" placeholder="Mot de passe" >
+                    </div>
+                  </div>
+                  <div class="col-xl-4">&nbsp;</div>
+                </div>
+                
+              </ng-template>
+            </ngb-tab>
+
+            <ngb-tab>
+              <ng-template ngbTabTitle><b>Headers</b> ({{dataSource.data.length}})</ng-template>
+              <ng-template ngbTabContent>
+
+                  <div class="row titleSub">
+                    <div class="col-xl-4">&nbsp;</div>
+                    <div class="col-xl-4">
+                        <div mat-raised-button  class="div_green" (click)="addRow()">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Row
+                        </div>
+                    </div>
+                    <div class="col-xl-4">&nbsp;</div>
+                  </div>
+
+                  
+
+
+                  <mat-table #table [dataSource]="dataSource">
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="select">
+                      <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+                      <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      (change)="$event ? selection.toggle(row) : null"
+                                      [checked]="selection.isSelected(row)"
+                                      [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                      </mat-cell>
+                    </ng-container>
+
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="position">
+                      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+                    </ng-container>
+
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="Key">
+                      <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <mat-form-field floatLabel="never">
+                          <input matInput placeholder="" [value]="element.Key" [(ngModel)]="element.Key" [ngModelOptions]="{standalone: true}"> 
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="Value">
+                      <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <mat-form-field floatLabel="never">
+                          <input matInput placeholder="" [value]="element.Value" [(ngModel)]="element.Value" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
+
+              </ng-template>
+            </ngb-tab>
+
+            <ngb-tab title="Params">
+                <ng-template ngbTabContent>
+
+                  <div class="row margin-top-20">
+                      <ace-editor 
+                      #editor
+                      [(text)]="paramsData"
+                      mode="text"
+                      [theme]="themeSelected"
+                      [readOnly]="false"
+                      [autoUpdateContent]="true"
+                      [durationBeforeCallback]="1000" 
+                      style="height: 100%; width:100%; overflow-x: auto; min-height: 200px;">
+                    </ace-editor>
+                  </div>
+
+              </ng-template>
+            </ngb-tab>
+
+
+            <ngb-tab title="Body" [disabled]="desableBody">
+              <ng-template ngbTabContent>
+
+                  <div class="row margin-top-20">
+                    <div class="col-xl-6">
+                      <div class="form-group">
+                        <select placeholder = "Format Text" class="form-control form-control-sm" (change)="selectFormatChangeHandler($event)" >
+                            <option *ngFor = "let format of listFormatText" 
+                              [value] = "format.name">
+                              {{ format.name }} ({{format.value}})
+                            </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row margin-top-20">
+                      <ace-editor 
+                      #editor
+                      [(text)]="bodyData"
+                      [mode]="modeSelected"
+                      [theme]="themeSelected"
+                      [options]="options"
+                      [readOnly]="false"
+                      [autoUpdateContent]="true"
+                      [durationBeforeCallback]="1000" 
+                      style="height: 100%; width:100%; overflow-x: auto; min-height: 400px;">
+                    </ace-editor>
+                  </div>
+
+              </ng-template>
+            </ngb-tab>
+
+
+          </ngb-tabset>
+            
+
+      </div>
+    </div>
+
+
+    </form>
+
+
+    <div *ngIf="resultatRequest!= ''" class="row margin-top-20 titreReponse">
+      Resultat 
+    </div>
+    <div class="row margin-top-20 "  *ngIf="resultatRequest!= ''" >
+
+        <ace-editor 
+        #editor
+        [(text)]="resultatRequest"
+        [mode]="modeResultat"
+        [theme]="themeSelected"
+        [options]="options"
+        [readOnly]="false"
+        [autoUpdateContent]="true"
+        [durationBeforeCallback]="1000" 
+        style="height: 100%; width:100%; overflow-x: auto; min-height: 400px;">
+      </ace-editor>
+
+    </div>
+
+
+
+
+  
+  </div>

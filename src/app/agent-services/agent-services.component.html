@@ -109,21 +109,21 @@
 
     <!-- Paramèter(s)  -->
     <div class="col-xl-4">
-        <app-agent-parameters *ngIf="parametersSelected" [operationSelect]="parametersSelected"></app-agent-parameters>
+        <app-agent-parameters *ngIf="parametersSelected" [operationSelect]="parametersSelected" [serviceSelect]="data.selected" [apiSelect]="apiSelected" [opSelect]="oneOpSelected" ></app-agent-parameters>
     </div>
     <!-- Paramèter(s) -->
 
 
     <!-- Propriétés / Règles -->
     <div class="col-xl-4">
-        <app-agent-properties *ngIf="regExpKeysOSelected" [operationSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" ></app-agent-properties>
+        <app-agent-properties *ngIf="regExpKeysOSelected" [operationSelect]="regExpKeysOSelected" [responseSelect]="responseSelected" [serviceSelect]="data.selected" [apiSelect]="apiSelected" [opSelect]="oneOpSelected" ></app-agent-properties>
     </div>
     <!-- Propriétés / Règles -->
 
 
      <!-- Dataset -->
      <div class="col-xl-4">
-        <app-agent-datasets *ngIf="dataSetsSelected" [dataSetsSelect]="dataSetsSelected" (dtsSelecte)="onSelectDataset($event)" ></app-agent-datasets>
+        <app-agent-datasets *ngIf="dataSetsSelected && oneOpSelected" [dataSetsSelect]="dataSetsSelected" (dtsSelecte)="onSelectDataset($event)" [serviceSelect]="data.selected" [apiSelect]="apiSelected" [opSelect]="oneOpSelected" ></app-agent-datasets>
     </div>
     <!-- Dataset -->
 
@@ -138,14 +138,14 @@
 
     <!-- Détail -->
     <div class="col-xl-4">
-        <app-agent-details [dataSetKeySelect]="this.dataSet.selected.dataset" [dataSetsSelect]="dataSet.selected.parameters"></app-agent-details>
+        <app-agent-details [dataSetKeySelect]="dataSet.selected.dataset" [dataSetsSelect]="dataSet.selected.parameters" [serviceSelect]="data.selected" [apiSelect]="apiSelected"  ></app-agent-details>
     </div>
     <!-- Détail -->
 
 
     <!-- Template -->
     <div class="col-xl-8">
-        <app-agent-template [templateSelect]="templateSelected" ></app-agent-template>
+        <app-agent-template [templateSelect]="templateSelected" [dataSetsSelect]="dataSet.selected.parameters" [serviceSelect]="data.selected" [apiSelect]="apiSelected" [datasetKeySelect]="dataSet.selected.dataset" ></app-agent-template>
     </div>
     <!-- Template -->
 

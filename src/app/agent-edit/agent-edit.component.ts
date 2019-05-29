@@ -146,7 +146,7 @@ export class AgentEditComponent implements OnInit {
     of( this.functionService.getParamType() ).subscribe(type  => {
       this.optionsParam = type
       this.parametersFroup.patchValue( {typeparamCtrl : this.optionsParam[0].name } )
-      this.setParamTypeFormat( 'DATE' )
+      this.paramTypeFormat = this.functionService.setParamTypeFormat( 'DATE' )
     })
 
     of( this.functionService.getSourceTP() ).subscribe(tps => {
@@ -188,60 +188,9 @@ export class AgentEditComponent implements OnInit {
     }*/
   }
 
-
-
-  
-  setParamTypeFormat( type ){
-
-    if ( type == 'DATE') {
-      this.paramTypeFormat = {
-        helpMessage: 'Format de date. Exemple: yyyy-mm-dd.',
-        patternCheck: '^[\w-_.]*$',
-        placeHolder: 'yyyy-mm-dd',
-        helpMessage2: '',
-        placeHolder2: '',
-        type: 'date'
-      }
-
-    }else if ( type == 'COUNTER') {
-      this.paramTypeFormat = {
-        helpMessage: 'Valeur de départ du compteur.',
-        patternCheck: '^[0-9]*$',
-        placeHolder: '0',
-        helpMessage2: '',
-        placeHolder2: '',
-        type: 'number'
-      }
-
-    }else if ( type == 'RANDOM_NUMERIC') {
-      this.paramTypeFormat = {
-        helpMessage: 'Longueur du nombre à générer.',
-        patternCheck: '^[0-9]*$',
-        placeHolder: '5',
-        helpMessage2: '',
-        placeHolder2: '',
-        type: 'number'
-      }
-    }else if ( type == 'RANDOM_ALPHANUM') {
-      this.paramTypeFormat = {
-        helpMessage: 'Longueur de la chaine à générer.',
-        patternCheck: '^[0-9]*$',
-        placeHolder: '5',
-        helpMessage2: 'Liste des caractères: ABCD12981add',
-        placeHolder2: 'ABCDEFGHIJKLMNOPQRSTUVWXZ',
-        type: 'text'
-      }
-    }
-
-  }
-
-  
-
-
-
   /***************************************** Paramètres  */
   selectTypeChangeHandler( event : any ){
-    this.setParamTypeFormat( event.target.value )
+    this.paramTypeFormat = this.functionService.setParamTypeFormat( event.target.value )
   }
 
   addParam() {
@@ -275,7 +224,7 @@ export class AgentEditComponent implements OnInit {
         arg1paramCtrl: '',
         arg2paramCtrl: ''
       } )
-      this.setParamTypeFormat( 'DATE' )
+      this.paramTypeFormat = this.functionService.setParamTypeFormat( 'DATE' )
 
     }else{
       this.backendService.errorsmsg( "Tous les champs sont obligatoires !" )
@@ -508,7 +457,6 @@ export class AgentEditComponent implements OnInit {
   */
  @Input()
  set editModeSet(name) {
-   console.log( "EDIT MODE -----------------------> editModeSeted ", name)
    this.editModeSeted = name;
     if( name.mode == "createService") {
       this.titrePage = "Nouveau Service"
@@ -524,73 +472,60 @@ export class AgentEditComponent implements OnInit {
 
   @Input()
   set templateSelect(name) {
-    console.log( "EDIT MODE -----------------------> templateSelect ", name)
     this.templateSelected = name;
   }
   @Input()
   set detailParameter(name) {
-    console.log( "EDIT MODE -----------------------> detailParameter ", name)
     this.detailParameterSelected = name;
   }
 
   @Input()
   set dataSetKeySelect(name) {
-    console.log( "EDIT MODE -----------------------> dataSetKeySelect ", name)
     this.dataSetKey = name;
   }
 
   @Input()
   set dataSetsSelect(name) {
-
-    console.log( "EDIT MODE -----------------------> dataSetsSelect ", name)
     this.dataSetsSelected = name;
   }
 
   @Input()
   set propetiesSelect(name) {
-    console.log( "EDIT MODE -----------------------> propetiesSelect ", name)
     this.propetiesSelected = name;
   }
 
   @Input()
   set responseSelect(name) {
-    console.log( "EDIT MODE -----------------------> responseSelect ", name)
     this.responseSelected = name;
   }
 
   @Input()
   set parametersSelect(name) {
-    console.log( "EDIT MODE -----------------------> parametersSelected ", name)
     this.parametersSelected = name;
   }
 
   @Input()
   set feederPropSelect(name) {
-    console.log( "EDIT MODE -----------------------> feederPropSelected ", name)
     this.feederPropSelected = name;
   }
 
   @Input()
   set transferPropSelect(name) {
-    console.log( "EDIT MODE -----------------------> transferPropSelected ", name)
     this.transferPropSelected = name;
   }
 
   @Input()
   set operationSelect(name) {
-    console.log( "EDIT MODE -----------------------> operationSelected ", name)
     this.operationSelected = name;
   }
 
   @Input()
   set serviceSelect(name) {
-    console.log( "EDIT MODE -----------------------> serviceSelect ", name)
     this.serviceSelected = name;
   }
 
   @Input()
   set agentSelect(name) {
-    console.log( "EDIT MODE -----------------------> agentSelected ", name)
     this.agentSelected = name;
   }
 
@@ -667,7 +602,6 @@ export class AgentEditComponent implements OnInit {
       this.serviceGroup.patchValue( {versionCtrl: '0'} )
     }
     this.initService();
-    console.log( this.leServiceACreer )
 
     let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port
     let url = agentUrl + "/" + this.leServiceACreer.basepath
@@ -730,13 +664,11 @@ export class AgentEditComponent implements OnInit {
 
     //Init service : Service
     this.initService();
-    console.log( this.leServiceACreer )
 
     let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + '/'
     let url = `${agentUrl}${this.leServiceACreer.basepath}/new/${this.apiOpGroup.controls['apiopCtrl'].value}`
     this.backendService.postData( url , this.leServiceACreer )
     .then(resultatRequest => {
-      console.log( resultatRequest )
       this.backendService.successmsg( "API [" + this.apiOpGroup.controls['apiopCtrl'].value + "] créée" )
       this.canclelMode("reload")
     })

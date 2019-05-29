@@ -6,20 +6,16 @@
 
             <div class="card-header card-header-red">
                 <div class="row header-card-red">
-                  <div class="col-10">Template --  </div>
-                  <div class="col-2 text-right"> + </div>
+                  <div class="col-8">Template - {{dataSetsDetail.template}}  </div>
+                  <div class="col-1 "> <span class="btnInHeader" (click)="modeSelect('xml')" > Xml </span></div>
+                  <div class="col-1 "> <span class="btnInHeader" (click)="modeSelect('json')" > Json </span></div>
+                  <div class="col-1 "> <span class="btnInHeader" (click)="resizeFull()" > <i class="fa fa-expand" aria-hidden="true"></i> </span></div>
+                  <div *ngIf="editStart" class="col-1 "> <span class="btnInHeader" (click)="valideChange()" > <i class="fa fa-check" aria-hidden="true"></i> </span></div>
                 </div>
             </div>
 
 
             <div class="card-body"  text-wrap >
-                
-                <!-- 
-                  <ace-editor [(text)]="templateSelected" #editor style="height:150px;"></ace-editor>
-                  [durationBeforeCallback]="1000" wait 1s before callback 'textChanged' sends new value
-                  [autoUpdateContent]="true" //change content when [text] change
-                  [mode]="'sql'" //string or object (thx ckiffel)
-                -->
 
                 <div ace-editor
                   [(text)]="templateSelected"

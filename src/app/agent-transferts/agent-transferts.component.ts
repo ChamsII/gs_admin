@@ -74,7 +74,6 @@ export class AgentTransfertsComponent implements OnInit {
     .catch(() => {
     });
 
-
   }
 
 

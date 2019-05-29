@@ -1,0 +1,55 @@
+
+<div class="modal-header">
+    <h4 class="modal-title"> Sélectionner un service </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  
+  <div class="modal-body">
+    
+
+      <div class="example-container">
+  
+          <div class="form-group">
+            <label for="inputState">Agents</label>
+            <select placeholder = "Agent Gene & Sis " class="form-control form-control-sm" (change)="selectAgentChangeHandler($event)" >
+                <option *ngFor = "let agent of agentsGenesis" 
+                  [value] = "agent.id">
+                  {{ agent.name }} : http://{{agent.hostname}}:{{agent.agent_port}}/
+                </option>
+            </select>
+          </div>
+
+
+          <div class="list-group" *ngIf="lesServices.length > 0 " >
+              <button type="button" class="list-group-item list-group-item-action header-top">
+              Sélectionne un appel
+            </button>
+
+            
+            <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+              
+                <button type="button" *ngFor = "let service of lesServices" (click)="selectService(service)" class="list-group-item list-group-item-action">
+                    {{service.url}} ({{service.operation}})
+                </button>
+                
+            </cdk-virtual-scroll-viewport>
+
+              
+
+          </div>
+
+
+  
+      </div>
+  
+      <!--<button type="submit" class="btn btn-primary" (click)="accept()">{{ btnOkText }}</button>-->
+
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  </div>

@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h4 class="modal-title"> {{title}} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  
+  <div class="modal-body">
+    
+      <form [formGroup]="propertiesGroup" >
+        <div class="example-container">
+
+            <div class="form-group">
+              <label for="tmpresCtrl">Temps de réponse (ms)</label>
+              <input id="tmpresCtrl" type="number" class="form-control" formControlName="tmpresCtrl" placeholder="Temps de réponses " required >
+            </div>
+
+            <div class="form-group">
+              <label for="formatCtrl">Format de la réponse</label>
+              <select placeholder = "Méthode" formControlName="formatCtrl" class="form-control form-control-sm" >
+                  <option *ngFor = "let format of formatResponse" 
+                    [value] = "format.name">
+                    {{ format.name }}
+                  </option>
+              </select>
+            </div>
+
+        </div>
+      </form>
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+    <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+  </div>

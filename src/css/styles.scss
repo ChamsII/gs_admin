@@ -58,7 +58,7 @@ $table-border-color: #dee2e6;
     bottom: 0;
     width: 100%;
     padding: 10px;
-  
+    position: fixed;
     background: rgba(60, 72, 88, 0.2);
 }
 
@@ -224,14 +224,13 @@ a {
 
 .div_green {
     background: linear-gradient(60deg,#66bb6a,#43a047);
-    background-color: rgba(0, 0, 0, 0);
     color: #FFF !important;
     font-size: 14px !important;
     box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(76,175,80,.4);
-    cursor: pointer;
+    margin: 5px  0px 5px 0px !important;
+    padding: 5px !important;
     text-align: center;
-    margin-left: 10px;
-    padding: 2px 5px 2px 5px;
+    cursor: pointer;
 }
 
 .saveEdite {

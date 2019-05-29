@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h4 class="modal-title"> {{title}} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  
+  <div class="modal-body">
+    
+      <form [formGroup]="keysRulesGroup" >
+          <ng-template matStepLabel>Clés et règles</ng-template>
+          <div class="example-container">
+
+            <div class="row">
+
+              <div class="col form-group">
+                <label for="regleCtrl">Règle (RegExp) </label>
+                <input id="regleCtrl" type="text" class="form-control" formControlName="regleCtrl" placeholder="Règle (RegExp)" >
+              </div>
+
+              <div class="col form-group">
+                <label for="targetCtrl">Jeux de données cible</label>
+                <input id="targetCtrl" type="text" class="form-control" formControlName="targetCtrl" placeholder="Jeux de données cible" >
+              </div>
+
+            </div>
+
+          </div>
+
+      </form>
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+    <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+  </div>

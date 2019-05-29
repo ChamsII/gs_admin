@@ -1,3 +1,58 @@
-<p>
-  parameters works!
-</p>
+<div class="modal-header">
+  <h4 class="modal-title"> {{title}} </h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body">
+  
+  <form [formGroup]="parametersFroup" >
+    
+      <div class="example-container">
+    
+      <div class="row">
+
+        <div class="col form-group">
+          <label for="nameparamCtrl">Nom du paramètre </label>
+          <input id="nameparamCtrl" type="text" class="form-control" formControlName="nameparamCtrl" placeholder="Nom du paramètre" >
+        </div>
+
+        <div class="col form-group">
+          <label for="typeparamCtrl">Type </label>
+          <select placeholder = "Type" formControlName="typeparamCtrl" class="form-control form-control-sm" (change)="selectTypeChangeHandler($event)" >
+              <option *ngFor = "let type of optionsParam" [value] = "type.name" >
+                {{ type.name }}
+              </option>
+          </select>
+        </div>
+
+        <div class="col form-group">
+          <label for="arg1paramCtrl">Arg 1 </label>
+          <input id="arg1paramCtrl" [type]="paramTypeFormat.type" class="form-control" formControlName="arg1paramCtrl" [placeholder]="paramTypeFormat.placeHolder" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ paramTypeFormat.helpMessage }}
+          </small>
+        </div>
+
+        <div class="col form-group" *ngIf=" paramTypeFormat.helpMessage2 != '' " >
+          <label for="arg2paramCtrl">Arg 2 </label>
+          <input id="arg2paramCtrl" type="text" class="form-control" formControlName="arg2paramCtrl" [placeholder]="paramTypeFormat.placeHolder2" >
+          <small id="passwordHelpBlock" class="form-text text-muted">
+            {{ paramTypeFormat.helpMessage2 }}
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+  <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+</div>

@@ -56,6 +56,7 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/ace-builds/src-min/ace.js",
               "node_modules/ace-builds/src-min/theme-monokai.js",
+              "node_modules/ace-builds/src-min/theme-textmate.js",
               "node_modules/ace-builds/src-min/mode-xml.js",
               "node_modules/ace-builds/src-min/mode-json.js",
               "node_modules/ace-builds/src-min/mode-scala.js",
@@ -93,7 +94,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "gs-admin:build"
+            "browserTarget": "gs-admin:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

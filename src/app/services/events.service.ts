@@ -16,6 +16,12 @@ export class EventsService {
     @Output() editMode = new EventEmitter();
     editModeSet
 
+    @Output() opSelected = new EventEmitter();
+    opSelect
+
+    @Output() testAndGenerationSelected = new EventEmitter();
+    testAndGenerationSelect
+
 
 
     setApiSelect(api){
@@ -32,6 +38,17 @@ export class EventsService {
         this.editModeSet = editmode
         this.editMode.emit( this.editModeSet )
     }
+
+    setOpSelecte(op){
+        this.opSelect = op
+        this.opSelected.emit( this.opSelect )
+    }
+
+    setTestAndGenerationSelect(mode){
+        this.testAndGenerationSelect = mode
+        this.testAndGenerationSelected.emit( this.testAndGenerationSelect )
+    }
+
 
 
 

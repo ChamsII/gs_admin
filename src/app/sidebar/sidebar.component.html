@@ -2,7 +2,7 @@
 <div class="bg-light border-right" id="sidebar-wrapper" *ngIf="showSidbar" >
 
     <div class="sidebar-heading border-bottom">
-        <img width="100%" alt="Angular Logo" src="assets/img/genesis.png">
+        <img width="100%" alt="Angular Logo" src="assets/img/genesis2.png">
     </div>
 
     <div class="list-group list-group-flush">
@@ -19,7 +19,7 @@
         </div>
       </div>
       
-      <a *ngFor="let agent of agentsList; index as ii;" href="#" (click)="agentSelected(agent)" class="card" >
+      <a *ngFor="let agent of agentsList; index as ii;" href="#" (contextmenu)="onRightClick(agent)" (click)="agentSelected(agent)" class="card" [ngClass]="{'card agentSelected': agentSelect.id == agent.id , 'card': agentSelect.id != agent.id }" >
 
         <div class="card-body">
           <span class="card-title">

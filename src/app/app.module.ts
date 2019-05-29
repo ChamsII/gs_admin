@@ -12,6 +12,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input'
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatDialogModule} from '@angular/material/dialog'; 
+import {ScrollDispatchModule} from '@angular/cdk/scrolling'; 
 
 import {
   MatAutocompleteModule,
@@ -84,6 +85,22 @@ import { TransfertsService } from './edit/transferts/transferts.service';
 import { FeedersComponent } from './edit/feeders/feeders.component';
 import { FeedersService } from './edit/feeders/feeders.service';
 import { ParametersComponent } from './edit/parameters/parameters.component';
+import { ParametersService } from './edit/parameters/parameters.service';
+import { PropertiesComponent } from './edit/properties/properties.component';
+import { PropertiesService } from './edit/properties/properties.service';
+import { RulesComponent } from './edit/rules/rules.component';
+import { RulesService } from './edit/rules/rules.service';
+import { DatasetsComponent } from './edit/datasets/datasets.component';
+import { DatasetsService } from './edit/datasets/datasets.service';
+import { DetailsComponent } from './edit/details/details.component';
+import { DetailsService } from './edit/details/details.service';
+import { TemplateComponent } from './edit/template/template.component';
+import { TemplateService } from './edit/template/template.service';
+import { AgentComponent } from './edit/agent/agent.component';
+import { AgentService } from './edit/agent/agent.service';
+import { GenerationComponent } from './generation/generation.component';
+import { AgentsComponent } from './modal/agents/agents.component';
+import { AgentsService } from './modal/agents/agents.service';
 
 
 @NgModule({
@@ -109,7 +126,15 @@ import { ParametersComponent } from './edit/parameters/parameters.component';
     OperationsComponent,
     TransfertsComponent,
     FeedersComponent,
-    ParametersComponent
+    ParametersComponent,
+    PropertiesComponent,
+    RulesComponent,
+    DatasetsComponent,
+    DetailsComponent,
+    TemplateComponent,
+    AgentComponent,
+    GenerationComponent,
+    AgentsComponent
   ],
   imports: [
     BrowserModule,
@@ -167,7 +192,8 @@ import { ParametersComponent } from './edit/parameters/parameters.component';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
       closeButton: true,
-    }) 
+    }),
+    ScrollDispatchModule
 
     
   ],
@@ -176,9 +202,23 @@ import { ParametersComponent } from './edit/parameters/parameters.component';
     ApisComponent,
     OperationsComponent,
     TransfertsComponent,
-    FeedersComponent
+    FeedersComponent,
+    ParametersComponent,
+    PropertiesComponent,
+    RulesComponent ,
+    DatasetsComponent,
+    DetailsComponent,
+    TemplateComponent,
+    AgentComponent,
+    AgentsComponent
   ],
-  providers: [BackendService , ConfirmationDialogService , ApisService , FunctionService , OperationsService , EventsService , TransfertsService , FeedersService ],
+  providers: [
+    BackendService , ConfirmationDialogService , ApisService , 
+    FunctionService , OperationsService , EventsService , 
+    TransfertsService , FeedersService , ParametersService ,
+    PropertiesService , RulesService , DatasetsService ,
+    DetailsService , TemplateService , AgentService , 
+    AgentsService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

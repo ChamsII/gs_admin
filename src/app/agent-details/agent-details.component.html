@@ -6,8 +6,7 @@
 
             <div class="card-header card-header-red">
                 <div class="row header-card-red">
-                  <div class="col-10">Detail -- {{dataSetKey.value}} </div>
-                  <div class="col-2 text-right"> + </div>
+                  <div class="col-11">Detail -- {{dataSetKey.value}} </div>
                 </div>
             </div>
 
@@ -16,28 +15,35 @@
             <div class="card-body"  text-wrap >
 
 
-              <div *ngIf="dataSetsSelected"> 
+              <div *ngIf="dataSetsDetail"> 
 
-                  <div class="row" *ngIf="dataSetsSelected.template" >
+                  <div class="row" *ngIf="dataSetsDetail.template" >
 
                     <div class="col-4 notSeleted" >
                       <span class="text-bold"> Template </span> 
                     </div>
-                    <div class="col-4 notSeleted" >
-                      <span class="text-normal"> {{ dataSetsSelected.template }} </span> 
+                    <div class="col-6 notSeleted" >
+                      <span class="text-normal"> {{ dataSetsDetail.template }} </span> 
+                    </div>
+
+                    <div class="col-2 text-right">
+                        <button class="btn btn-clear" small (click)="editDetail()" >
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
                     </div>
   
                   </div>
 
 
-                  <div class="row" *ngIf="dataSetsSelected.delay != undefined">
+                  <div class="row" *ngIf="dataSetsDetail.delay != undefined">
 
                     <div class="col-4 notSeleted" >
                       <span class="text-bold"> Delay </span> 
                     </div>
-                    <div class="col-4 notSeleted" >
-                      <span class="text-normal"> {{ dataSetsSelected.delay }} </span> 
+                    <div class="col-6 notSeleted" >
+                      <span class="text-normal"> {{ dataSetsDetail.delay }} </span> 
                     </div>
+                    <div class="col-2">&nbsp;</div>
   
                   </div>
 

@@ -6,8 +6,8 @@
 
             <div class="card-header card-header-red">
                 <div class="row header-card-red">
-                  <div class="col-10">DataSets </div>
-                  <div class="col-2 text-right"> + </div>
+                  <div class="col-11">DataSets </div>
+                  <div class="col-1 "> <span class="btnInHeader" (click)="addDataSet()" > <i class="fa fa-plus" aria-hidden="true"></i> </span></div>
                 </div>
             </div>
 
@@ -20,13 +20,18 @@
 
                 <div class="row" *ngFor="let dts of dataSetsSelected; index as i;">
 
-                    <div class="col-10" tappable (click)="onSelectDataset(dts)" [ngClass]="{'datasetSelected': dts.value == dtsetSelected.value , 'notSeleted': dts.value != dtsetSelected.value }" >
+                    <div class="col-9" tappable (click)="onSelectDataset(dts)" [ngClass]="{'datasetSelected': dts.value == dtsetSelected.value , 'notSeleted': dts.value != dtsetSelected.value }" >
                       <span class="text-bold"> {{ dts.value }} </span> 
                     </div>
-  
+
+                    <div class="col-1 text-right">
+                        <button class="btn btn-clear" small (click)="editDataSet(dts)" >
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                    </div>
   
                     <div class="col-1 text-right">
-                        <button class="btn btn-clear" small (click)="editApi(dts)" >
+                        <button class="btn btn-clear" small (click)="deleteDataSet(dts)" >
                             <i class="fa fa-times text_red" aria-hidden="true"></i>
                         </button>
                     </div>

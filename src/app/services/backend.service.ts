@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient , HttpParams } from '@angular/common/http';
+import { HttpClient , HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { ToastrService } from 'ngx-toastr'; 
 
@@ -14,7 +14,9 @@ import { Observable } from 'rxjs';
 export class BackendService {
 
   private msgErreur = JSON.parse('{}');
-  private options
+  private agents_url = "http://127.0.0.1:4000/agent/"
+  private headers = new HttpHeaders()
+
 
   constructor( private http: HttpClient, private toastr: ToastrService ) { }
 
@@ -23,10 +25,34 @@ export class BackendService {
 
 
   getAgents(){
-
-    let url = "./assets/models/agents.json"
+    //let url = "./assets/models/agents.json"
     return this.http
-    .get(url)
+    .get(`${this.agents_url}listAgent`)
+    .toPromise()
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+        return this.msgErreur.json() as MessageApiGlobal;
+    });
+  }
+
+  postAgent(param) {
+
+    this.headers.set('Content-Type', 'application/json')
+
+    let body = JSON.stringify(param)
+    return this.http
+    .post(`${this.agents_url}create`, param, {headers: this.headers, responseType:'json' } )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+
+  }
+
+  getNbrAgent(){
+    return this.http
+    .get(`${this.agents_url}nbrAgent`)
     .toPromise()
     .then(response => {
       return response
@@ -137,11 +163,64 @@ export class BackendService {
   }
 
 
-
+/**
+ * 
+ * @param operation 
+ */
   
 
+  /*** Test & generate */
+
+  getTestData(operation) {
+
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    const headers = new HttpHeaders()
+    for(var indice in operation.header ){
+      headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+    }
+
+    return this.http
+      .get(url, {responseType: 'text'} )
+      .toPromise()
+      .then(response =>response )
+      .catch(error => error );
+
+  }
 
 
+  postTestData(operation) {
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    const headers = new HttpHeaders()
+    for(var indice in operation.header ){
+      headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+    }
+    let body = operation.body
+    return this.http
+    .post(url, body, {responseType: 'text'} )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+
+  }
+
+/**
+ * curl -X POST -d @data.xml http://localhost:9876/TEST_FEEDER_v0/Get
+ * curl -X POST -d @data.xml http://localhost:9876/TEST_FEEDER_v0/Get
+ * let operation = {  /TEST_DOCR_v0/
+      method: this.testGenerationGroup.controls['methodCtrl'].value ,
+      url: this.testGenerationGroup.controls['urlapuCtrl'].value ,
+      url_with_params: this.paramsData != "" ? `${this.testGenerationGroup.controls['urlapuCtrl'].value}?${this.paramsData}` : "",
+      autorization: {username: this.testGenerationGroup.controls['authUserCtrl'].value, password: this.testGenerationGroup.controls['authPasswordCtrl'].value},
+      header: this.dataSource.data ,
+      body: this.bodyData
+    }
+ */
   
 
 

@@ -69,7 +69,6 @@ export class AgentOperationsComponent implements OnInit {
 
 
   deleteOperation(op){
-    console.log( op )
 
     this.confirmationDialogService.confirm('', `Etes-vous sur de vouloir supprimer l'opération [${op.method}] ?`)
     .then((confirmed) => {

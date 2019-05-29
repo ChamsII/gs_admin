@@ -25,7 +25,6 @@ export class AgentApisComponent implements OnInit {
   ngOnInit() {
 
     this.eventsService.apiSelected.subscribe(apiChange => {
-      console.log("subscribing : " , apiChange)
       this.apiSelected = apiChange
       this.apiSelecte.emit(this.apiSelected);
     })
@@ -37,8 +36,6 @@ export class AgentApisComponent implements OnInit {
    */
   @Input()
   set serviceSelect(name) {
-
-    console.log( "serviceSelect ", name)
     if(name != -1 && name != 1) {
       this.serviceSelected = name;
       this.apiSelected = this.serviceSelected.apis[0]
@@ -55,7 +52,6 @@ export class AgentApisComponent implements OnInit {
 
 
   editApi(api){
-    console.log("edit ", api)
 
     this.apisService.confirm(this.serviceSelected, api)
     .then((confirmed) => {
@@ -66,7 +62,6 @@ export class AgentApisComponent implements OnInit {
       }
     })
     .catch(() => {
-      console.log('Error modal')
     });
 
   }
@@ -99,7 +94,6 @@ export class AgentApisComponent implements OnInit {
       }
     })
     .catch(() => {
-      console.log('Error modal')
     });
 
   }

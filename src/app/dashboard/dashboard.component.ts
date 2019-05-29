@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EventsService } from '../services/events.service'
+
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +15,17 @@ export class DashboardComponent implements OnInit {
     status: false,
     mode: ''
   };
+  testAndGenerationMode = false;
+  yearCopyright = new Date().getFullYear()
 
-  constructor() { }
+  constructor(public eventsService: EventsService) { }
 
   ngOnInit() {
+    this.eventsService.testAndGenerationSelected.subscribe(mode => {
+      this.testAndGenerationMode = mode;
+      if( !mode )
+        this.showSidbar = true
+    })
   }
 
 
@@ -27,7 +36,6 @@ export class DashboardComponent implements OnInit {
 
   agentSelected(agent){
     this.agentSelect = agent
-    console.log( this.agentSelect )
   }
 
   clickSidebar(){
@@ -41,6 +49,14 @@ export class DashboardComponent implements OnInit {
       mode: 'createService'
     }
   }
+
+
+  openTestAndGenerationMode(){
+    this.eventsService.setTestAndGenerationSelect(true)
+    this.testAndGenerationMode = true;
+    this.showSidbar  = false;
+  }
+
 
 
 }

@@ -37,12 +37,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item active">
+              <a class="nav-link back_green" href="#" (click)="openTestAndGenerationMode()" > 
+                <span class="sr-only">(current)</span>
+                <i class="fa fa-cogs" aria-hidden="true"></i>
+                Test & Generation
+              </a>
+            </li>
+
+            <li class="nav-item active">
               <a class="nav-link back_blue" href="#" (click)="openEditMode()" > 
                 <span class="sr-only">(current)</span>
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 New Service
               </a>
             </li>
+
+
           </ul>
         </div>
 
@@ -52,32 +62,37 @@
 
       <!-- Start content  -->
 
-      <app-agent-dash [agentSelect]="agentSelect" [editMode]="editMode" ></app-agent-dash>
+      <app-agent-dash *ngIf="!testAndGenerationMode" [agentSelect]="agentSelect" [editMode]="editMode" ></app-agent-dash>
+
+
+      <app-generation *ngIf="testAndGenerationMode" ></app-generation>
 
       
       <!-- End content-->
 
       <div class="margin-after-footer"></div>
+      <br /><br /><br />
 
 
 
-      <!-- Start Footer -->
-      <div class="footer">
-        <div class="row">
-          <div class="col-6 footer-left">
-            Usine à bouchon
-          </div>
-          <div class="col-6 footer-right">
-              <i class="fa fa-copyright" aria-hidden="true"></i> 2019, made by <span class="copyright">GFI</span> 
-          </div>
-
-        </div>
-      </div>
-      <!-- End footer -->
-
+    
 
     </div>
     <!-- content-wrapper -->
 
   </div>
   <!-- /#wrapper -->
+
+  <!-- Start Footer -->
+  <div class="footer">
+      <div class="row">
+        <div class="col-6 footer-left">
+          Usine à bouchon
+        </div>
+        <div class="col-6 footer-right">
+            <i class="fa fa-copyright" aria-hidden="true"></i> {{ yearCopyright }}, made by <span class="copyright">ChamsII</span> 
+        </div>
+
+      </div>
+    </div>
+    <!-- End footer -->

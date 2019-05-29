@@ -118,7 +118,6 @@ export class AgentServicesComponent implements OnInit {
             this.backendService.getData( url_2 )
             .then(serviceResult => {
 
-              console.log( "serviceResult ", serviceResult)
 
               var id = count++
               let service = {basepath: serviceResult.basepath, state: serviceResult.state , status: 0}
@@ -145,17 +144,14 @@ export class AgentServicesComponent implements OnInit {
                   delay: this.dataSelected.apis[0].operations[0].delay,
                   responseType: this.dataSelected.apis[0].operations[0].responseType
                 }
-                console.log("dataSelectedPrime ", this.dataSelected)
               }
 
               this.data.services.push(serviceResult)
 
             })
             .catch(error => {
-              console.log(error)
             })
 
-            console.log("this.data" , this.data)
 
           });
 
@@ -166,7 +162,6 @@ export class AgentServicesComponent implements OnInit {
 
     })
     .catch(error => {
-      console.log(error)
     })
 
   }
@@ -198,7 +193,6 @@ export class AgentServicesComponent implements OnInit {
    */
   onSelectService(service, index?){
     this.data.selected = service
-    console.log( "this.data.selected " , this.data.selected  )
     this.dataSelected = this.data.selected
 
     //Liste des oprérations de l'api séléctionné
@@ -223,7 +217,6 @@ export class AgentServicesComponent implements OnInit {
 
 
   onApiSelected(api){
-    console.log( "onApiSelected", api.operations) //operations
     this.operationSelected = api.operations
     this.apiSelected = api
 
@@ -247,8 +240,8 @@ export class AgentServicesComponent implements OnInit {
 
 
   onOperationSelected(operation){
-    console.log( "onOperationSelected", operation)
     this.oneOpSelected = operation
+    this.eventsService.setOpSelecte(operation)
     if( this.data.selected != -1 )
       this.refreshDatasetsList()
   }
@@ -261,33 +254,25 @@ export class AgentServicesComponent implements OnInit {
 
     this.dataSet.datasets=[];
 		this.dataSet.selected = { dataset:{}, template:{}, parameters: {} };
-		
     let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
     let filter = ''
-
     let url =  `${agentUrl}${this.dataSelected.basepath}/${this.apiSelected.name}/${this.oneOpSelected.method}/datasets?pageNum=${this.pageNumDataSet}&pageSize=${this.servicesPerPage}&filter=${filter}`
-
-    console.log( url )
 
     this.backendService.getData( url)
     .then(resultatRequest => {
       this.requestResultat = resultatRequest
-      console.log("******************** DataSet " , this.requestResultat)
-
       this.dataSet.datasets = this.requestResultat.page
       this.dataSet.pages = Math.ceil( this.requestResultat.totalSize / this.servicesPerPage )
       this.dataSet.currentPage = this.pageNumDataSet
-
       //liste dataset opération selectionnée
       this.dataSetsSelected = this.dataSet.datasets
-
       if( this.dataSet.datasets.length > 0 ){
         this.onSelectDataset( this.dataSet.datasets[0] )
       }
 
     })
     .catch(error => {
-      console.log(error)
+      
     })
 
   }
@@ -299,23 +284,17 @@ export class AgentServicesComponent implements OnInit {
    */
   onSelectDataset( dataset ){
 
-    console.log( "onSelectDataset === >" , dataset )
-
     let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
-
     let url = `${agentUrl}${this.dataSelected.basepath}/${this.apiSelected.name}/${this.oneOpSelected.method}/dataset/${dataset.key}`
-
     this.backendService.getData( url)
     .then(resultatRequest => {
-      console.log( "dataSet ==> " , resultatRequest )
       this.requestResultat = resultatRequest
       this.dataSet.selected.parameters = this.requestResultat
       this.dataSet.selected.dataset = dataset
-
       this.displayTemplate()
     })
     .catch(error => {
-      console.log(error)
+
     })
 
   }
@@ -329,14 +308,12 @@ export class AgentServicesComponent implements OnInit {
     let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
     let templateName = this.dataSet.selected.parameters['template']
     let url = `${agentUrl}${this.dataSelected.basepath}/${this.apiSelected.name}/${this.oneOpSelected.method}/template/${templateName}`
-
     this.backendService.getTemplate( url)
     .then(resultatRequest => {
-      console.log( "template ==> " , resultatRequest )
       this.templateSelected = resultatRequest
     })
     .catch(error => {
-      console.log(error)
+
     })
 
   }
@@ -386,20 +363,16 @@ export class AgentServicesComponent implements OnInit {
       srv.status = this.requestResultat.state == "stopped" ? 0:1
       //Service selected == service updated
       if( this.dataSelected.basepath == this.requestResultat.basepath ){
-
         this.dataSelected = this.requestResultat
         this.dataSelected.status = this.requestResultat.state == "stopped" ? 0:1
         this.data.selected = this.dataSelected
-
       }else {
-
         for( var id in this.data.services ){
           if( this.data.services[id].basepath == this.requestResultat.basepath ){
             this.data.services[id].state = this.requestResultat.state
             this.data.services[id].status = this.requestResultat.state == "stopped" ? 0:1
           }
         }
-
       }
       if( this.requestResultat.state == "stopped" )
         this.backendService.toastrwaring( "Service " + this.requestResultat.basepath + " arrêté " )
@@ -421,29 +394,24 @@ export class AgentServicesComponent implements OnInit {
    * @param index 
   */
   deleteService(srv, index) {
-    console.log( srv )
 
     this.confirmationDialogService.confirm('', `Etes-vous sur de vouloir supprimer le service ${srv.basepath} ?`)
     .then((confirmed) => {
       if(confirmed){
-
         let agentUrl = "http://" + this.agentSelected.hostname + ":" + this.agentSelected.admin_port + "/"
         let url = `${agentUrl}delete/${srv.basepath}`
         this.backendService.getData( url )
         .then(resultatRequest => {
           this.requestResultat = resultatRequest
-          console.log( resultatRequest )
           this.data.selected = -1
           this.displayPage()
         })
         .catch(error => {
-          console.log( error )
+
         })
-        
       }
     })
     .catch(() => {
-      console.log('Error modal')
     });
 
   }

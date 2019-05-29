@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h4 class="modal-title"> {{title}} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  
+  <div class="modal-body">
+    
+      <form [formGroup]="agentGroup" >
+        <div class="example-container">
+
+            <div class="form-group">
+              <label for="nameCtrl">Nom du serveur</label>
+              <input id="nameCtrl" type="text" class="form-control" formControlName="nameCtrl" placeholder="Nom du serveur" required >
+            </div>
+
+            <div class="form-group">
+              <label for="hostnameCtrl">Hostname</label>
+              <input id="hostnameCtrl" type="text" class="form-control" formControlName="hostnameCtrl" placeholder="Hostname " required >
+            </div>
+
+            <div class="form-group">
+              <label for="adminportCtrl">Admin port</label>
+              <input id="adminportCtrl" type="text" class="form-control" formControlName="adminportCtrl" placeholder="Admin port" required >
+            </div>
+
+            <div class="form-group">
+              <label for="agentportCtrl">Agent port</label>
+              <input id="agentportCtrl" type="text" class="form-control" formControlName="agentportCtrl" placeholder="Agent port " required >
+            </div>
+
+            <div class="form-group" >
+              <div class="funkyradio">
+                <div class="funkyradio-default">
+                    <input type="checkbox" class="form-control" name="checkbox" id="dockerCtrl" formControlName="dockerCtrl" (change)="checkValueIsUnique($event)" />
+                    <label for="dockerCtrl">Agent docker ? </label>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </form>
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+    <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+  </div>
