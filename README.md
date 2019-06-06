@@ -7,6 +7,8 @@ Un projet  [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
 > Plus de détail sur [Gs-engine](https://github.com/ChamsII/gs_engine)
 
+![Gen&SiS administration](screenshot.png?raw=true)
+
 
 ## Installation
 

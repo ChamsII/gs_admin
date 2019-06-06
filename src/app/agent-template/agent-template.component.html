@@ -7,8 +7,17 @@
             <div class="card-header card-header-red">
                 <div class="row header-card-red">
                   <div class="col-8">Template - {{dataSetsDetail.template}}  </div>
-                  <div class="col-1 "> <span class="btnInHeader" (click)="modeSelect('xml')" > Xml </span></div>
-                  <div class="col-1 "> <span class="btnInHeader" (click)="modeSelect('json')" > Json </span></div>
+                  <div class="col-2 "> 
+                     
+                    <label for="formatCtrl">Format</label>
+                    <select placeholder = "Méthode" [(ngModel)]="modelSelectFormt" name="modelSelectFormt" class="form-controls form-control-sm" (change)="modeSelect($event.target.value)" >
+                        <option *ngFor = "let format of formatResponse" 
+                            [value] = "format.name">
+                            {{ format.name }}
+                        </option>
+                    </select>
+  
+                  </div>
                   <div class="col-1 "> <span class="btnInHeader" (click)="resizeFull()" > <i class="fa fa-expand" aria-hidden="true"></i> </span></div>
                   <div *ngIf="editStart" class="col-1 "> <span class="btnInHeader" (click)="valideChange()" > <i class="fa fa-check" aria-hidden="true"></i> </span></div>
                 </div>

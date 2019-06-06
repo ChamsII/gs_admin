@@ -33,7 +33,8 @@ export class FunctionService {
     return [
       {id: 1, name: "XML"},
       {id: 2, name: "JSON"},
-      {id: 3, name: "TXT"}
+      {id: 3, name: "TXT"},
+      {id: 3, name: "HTML"}
     ]
   }
 

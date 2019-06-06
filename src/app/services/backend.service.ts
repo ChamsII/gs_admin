@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 export class BackendService {
 
   private msgErreur = JSON.parse('{}');
-  private agents_url = "http://127.0.0.1:4000/agent/"
+  //private agents_url = "http://localhost:3000/agent/"
+  private agents_url = "http://10.79.213.51:3000/agent/"
   private headers = new HttpHeaders()
 
 

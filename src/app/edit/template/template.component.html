@@ -1,11 +1,15 @@
 <div class="modal-header">
   <h4 class="modal-title"> Template - {{dataSetsDetail.template}} </h4>
-  <button type="button" class="close" aria-label="Close" (click)="modeSelect('xml')">
-    <span aria-hidden="true">Xml</span>
-  </button>
-  <button type="button" class="close" aria-label="Close" (click)="modeSelect('json')">
-    <span aria-hidden="true">Json</span>
-  </button>
+
+  
+  <select placeholder = "Méthode" [(ngModel)]="modelSelectFormt" name="modelSelectFormt" class="form-controls close form-control-sm" (change)="modeSelect($event.target.value)" >
+      <option *ngFor = "let format of formatResponse" 
+          [value] = "format.name">
+          {{ format.name }}
+      </option>
+  </select>
+
+
   <button type="button" class="close" aria-label="Close" (click)="dismiss()">
     <span aria-hidden="true">&times;</span>
   </button>

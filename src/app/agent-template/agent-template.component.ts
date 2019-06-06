@@ -7,9 +7,11 @@ import { TemplateService } from '../edit/template/template.service';
 
 import 'brace';
 import 'brace/mode/xml';
+import 'brace/mode/html';
+import 'brace/mode/text';
 import 'brace/theme/monokai';
 import 'brace/mode/json';
-
+import { of } from 'rxjs'
 
 @Component({
   selector: 'app-agent-template',
@@ -29,17 +31,34 @@ export class AgentTemplateComponent implements OnInit {
   serviceSelected
   opSelect
 
+  formatResponse = []
+  modelSelectFormt = "XML"
+
 
   constructor(public backendService: BackendService , public functionService: FunctionService , public eventsService: EventsService ,
     public templateService: TemplateService ) { }
 
   ngOnInit() {
+
+    of( this.functionService.getFormatResponse() ).subscribe(formats => {
+      this.formatResponse = formats
+      //this.formatResponse[0].name
+    })
+
     this.eventsService.opSelected.subscribe(opSelect => {
       this.opSelect = opSelect
       if( this.opSelect.responseType.search(/xml/i) > 0 ){
         this.modeSelected = "xml"
-      }else{
+        this.modelSelectFormt = "XML"
+      }else if( this.opSelect.responseType.search(/json/i) > 0 ){
         this.modeSelected = "json"
+        this.modelSelectFormt = "JSON"
+      }else if( this.opSelect.responseType.search(/html/i) > 0 ){
+        this.modeSelected = "html"
+        this.modelSelectFormt = "HTML"
+      }else{
+        this.modeSelected = "text"
+        this.modelSelectFormt = "TXT"
       }
     })
   }
@@ -83,7 +102,10 @@ export class AgentTemplateComponent implements OnInit {
 
   modeSelect(mode){
     this.editStart = true
-    this.modeSelected = mode
+    if( mode.toLowerCase() == "txt" )
+      this.modeSelected =  "text"
+    else
+      this.modeSelected =  mode.toLowerCase()
   }
 
   resizeFull(){
