@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient , HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient , HttpRequest, HttpHeaders } from '@angular/common/http';
 
 import { ToastrService } from 'ngx-toastr'; 
 
@@ -14,17 +14,16 @@ import { Observable } from 'rxjs';
 export class BackendService {
 
   private msgErreur = JSON.parse('{}');
-  //private agents_url = "http://localhost:3000/agent/"
-  private agents_url = "http://10.79.213.51:3000/agent/"
-  private headers = new HttpHeaders()
+  private agents_url = "http://localhost:3000/agent/"
 
+  private headers = new HttpHeaders()
 
   constructor( private http: HttpClient, private toastr: ToastrService ) { }
 
 
-
-
-
+  /**
+   * Liste des agents
+   */
   getAgents(){
     //let url = "./assets/models/agents.json"
     return this.http
@@ -38,6 +37,10 @@ export class BackendService {
     });
   }
 
+  /**
+   * Ajouter ou modifier un aagent
+   * @param param 
+   */
   postAgent(param) {
 
     this.headers.set('Content-Type', 'application/json')
@@ -51,6 +54,9 @@ export class BackendService {
 
   }
 
+  /***
+   * Liste le nombre d'agents
+   */
   getNbrAgent(){
     return this.http
     .get(`${this.agents_url}nbrAgent`)
@@ -65,51 +71,57 @@ export class BackendService {
 
 
 
-  getServices(param, pageNum, filter) {
-
-  //  let param = JSON.parse(params)
-    let agentUrl = "http://" + param.hostname + ":" + param.admin_port
-    let servicesPerPage = "10";
-    let url =  `${agentUrl}/list?pageNum=${pageNum}&pageSize=${servicesPerPage}&filter=${filter}`
-
-    return this.http
-    .get(url)
-    .toPromise()
-    .then(response => response)
-    .catch(error => {
-      return this.msgErreur.json()
-    });
-
-}
-
-
-
+  /**
+   * Get from server 
+   * url Exemple : http://localhost:9085/list?pageNum=1&pageSize=10&filter= 
+   * @param url 
+   */
   getData(url) {
 
-      return this.http
-      .get(url)
-      .toPromise()
-      .then(response => response)
-      .catch(error => error );
+    var headers = new HttpHeaders()
+    headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    .set('Content-Type', 'application/json; charset=utf-8')
 
+    return this.http
+    .get(url , {headers: headers })
+    .toPromise()
+    .then(response => response)
+    .catch(error => error );
   }
 
 
+  /**
+   * Post to server
+   * Ajout : Service , api, opération, Tranfert , Feeder ... etc 
+   * @param url 
+   * @param param 
+   */
   postData(url, param){
+
+    var headers = new HttpHeaders()
+    headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    .set('Content-Type', 'application/json; charset=utf-8')
 
     let body = JSON.stringify(param)
     return this.http
-    .post(url, body)
+    .post(url, body, { headers: headers })
     .toPromise()
     .then(response => response)
     .catch(error => error )
 
   }
 
+  /**
+   * Delete (Service , api , operation ... )
+   * @param url 
+   */
   deleteData(url) {
+    var headers = new HttpHeaders()
+    headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    .set('Content-Type', 'application/json; charset=utf-8')
 
     return this.http
-    .delete(url)
+    .delete(url, {headers:headers})
     .toPromise()
     .then(response => response)
     .catch(error => {
@@ -120,11 +132,20 @@ export class BackendService {
   }
 
 
+  /**
+   * Updtae server 
+   * Update : Service, Api, Opérations , Transfert , Feeder ... etc
+   * @param url 
+   * @param param 
+   */
   putData(url, param){
+    var headers = new HttpHeaders()
+    headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    .set('Content-Type', 'application/json; charset=utf-8')
 
     let body = JSON.stringify(param)
     return this.http
-    .put(url, body)
+    .put(url, body , {headers: headers})
     .toPromise()
     .then(response => response)
     .catch(error => error )
@@ -132,10 +153,18 @@ export class BackendService {
   }
 
 
+  /**
+   * Retourne un template d'un service 
+   * @param url 
+   */
   getTemplate(url) {
+
+    var headers = new HttpHeaders()
+    headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    .set('Content-Type', 'application/json; charset=utf-8')
     
       return this.http
-      .get(url , {responseType:'text'})
+      .get(url , { headers: headers, responseType:'text'})
       .toPromise()
       .then(response => response)
       .catch(error => {
@@ -145,19 +174,35 @@ export class BackendService {
   }
 
 
+  /**
+   * Tosat
+   * @param message 
+   */
   successmsg(message){  
       this.toastr.success(message,'Success')  
   }  
 
+  /**
+   * Tosat
+   * @param message 
+  */
   errorsmsg(message){  
     this.toastr.error(message,'Error')  
   }  
 
+  /**
+   * Tosat
+   * @param message 
+  */
   infotoastr(message)  
   {  
     this.toastr.info(message, 'Information');  
   }
 
+  /**
+   * Tosat
+   * @param message 
+  */
   toastrwaring(message)  
   {  
     this.toastr.warning(message, 'Warning');  
@@ -167,67 +212,164 @@ export class BackendService {
 /**
  * 
  * @param operation 
- */
+*/
   
-
   /*** Test & generate */
-
   getTestData(operation) {
 
     let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
-    const headers = new HttpHeaders()
+    var headers = new HttpHeaders()
+    //headers = headers.set( 'Access-Control-Allow-Origin', '*')
+    //headers = headers.set('Content-Type', 'text/plain')
+    
     for(var indice in operation.header ){
-      headers.set(operation.header[indice].Key, operation.header[indice].Value)
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
     }
     if( operation.autorization.username !="" && operation.autorization.password !="" ){
-      headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
     }
 
     return this.http
-      .get(url, {responseType: 'text'} )
+      .get(url, {headers: headers, responseType: 'text'})
       .toPromise()
       .then(response =>response )
-      .catch(error => error );
+      .catch(error => {
+        return error
+      } );
 
   }
 
 
   postTestData(operation) {
+
     let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
-    const headers = new HttpHeaders()
+    var headers = new HttpHeaders()
+    
     for(var indice in operation.header ){
-      headers.set(operation.header[indice].Key, operation.header[indice].Value)
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
     }
     if( operation.autorization.username !="" && operation.autorization.password !="" ){
-      headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
     }
+
     let body = operation.body
     return this.http
-    .post(url, body, {responseType: 'text'} )
+    .post(url, body, {headers: headers, responseType: 'text'} )
     .toPromise()
     .then(response => response)
     .catch(error => error )
 
   }
 
-/**
- * curl -X POST -d @data.xml http://localhost:9876/TEST_FEEDER_v0/Get
- * curl -X POST -d @data.xml http://localhost:9876/TEST_FEEDER_v0/Get
- * let operation = {  /TEST_DOCR_v0/
-      method: this.testGenerationGroup.controls['methodCtrl'].value ,
-      url: this.testGenerationGroup.controls['urlapuCtrl'].value ,
-      url_with_params: this.paramsData != "" ? `${this.testGenerationGroup.controls['urlapuCtrl'].value}?${this.paramsData}` : "",
-      autorization: {username: this.testGenerationGroup.controls['authUserCtrl'].value, password: this.testGenerationGroup.controls['authPasswordCtrl'].value},
-      header: this.dataSource.data ,
-      body: this.bodyData
+  putTestData(operation) {
+
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    var headers = new HttpHeaders()
+    
+    for(var indice in operation.header ){
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
     }
- */
-  
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
+    }
 
+    let body = operation.body
+    return this.http
+    .put(url, body, {headers: headers, responseType: 'text'}  )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
 
+  }
 
+  deleteTestData(operation) {
 
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    var headers = new HttpHeaders()
+    
+    for(var indice in operation.header ){
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
+    }
 
+    //let body = operation.body
+    return this.http
+    .delete(url, {headers: headers, responseType: 'text'}  )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+    
+  }
+
+  patchTestData(operation) {
+
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    var headers = new HttpHeaders()
+    
+    for(var indice in operation.header ){
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
+    }
+
+    let body = operation.body
+    return this.http
+    .patch(url, body, {headers: headers, responseType: 'text'}  )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+
+  }
+
+  headTestData(operation) {
+
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    var headers = new HttpHeaders()
+    
+    for(var indice in operation.header ){
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
+    }
+
+    return this.http
+    .head(url, {headers: headers, responseType: 'text'}  )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+
+  }
+
+  optionsTestData(operation) {
+
+    let url = operation.url_with_params == "" ? operation.url : operation.url_with_params
+    var headers = new HttpHeaders()
+    
+    for(var indice in operation.header ){
+      headers = headers.set(operation.header[indice].Key, operation.header[indice].Value)
+    }
+    if( operation.autorization.username !="" && operation.autorization.password !="" ){
+      headers = headers.set('Authorization', 'Basic ' + btoa( operation.autorization.username + ":" + operation.autorization.password) )
+      headers = headers.set( 'Content-Type', 'application/x-www-form-urlencoded')
+    }
+
+    return this.http
+    .options(url, {headers: headers, responseType: 'text'} )
+    .toPromise()
+    .then(response => response)
+    .catch(error => error )
+
+  }
 
 
 

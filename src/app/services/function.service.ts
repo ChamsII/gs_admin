@@ -38,6 +38,13 @@ export class FunctionService {
     ]
   }
 
+  getTypeResponse(){
+    return [
+      {id: 1, name: "DATA"},
+      {id: 2, name: "FILE"}
+    ]
+  }
+
   getParamType(){
     return [
       {id: 1, name: "DATE"},
@@ -71,7 +78,8 @@ export class FunctionService {
         regExpKeys:[],
         responseType:'text/xml;charset=UTF-8',
         delay:0,
-        feederProperties: []
+        feederProperties: [],
+        fileResponse: ''
       }]
     };
 
@@ -94,7 +102,8 @@ export class FunctionService {
       regExpKeys:[],
       responseType:'text/xml;charset=UTF-8',
       delay:0,
-      feederProperties: []
+      feederProperties: [],
+      fileResponse: ''
     }
   }
 
@@ -256,10 +265,24 @@ export class FunctionService {
     return first_[0].split("/")[1]
   }
 
+  fileNameInit(operation){
+    if(operation.fileResponse) {
+      if( operation.fileResponse == ""){
+        return false;
+      }else{
+        return true;
+      }
+    }else {
+      return false
+    }
+  }
+
   initProperties(properties?){
     return {
       responseType: properties.responseType ? this.getResponseInitProperties(properties.responseType) : "XML" ,
       delay: properties.delay ? properties.delay : 0,
+      reponseContent: this.fileNameInit(properties) == true ? "FILE" : "DATA",
+      fileName: this.fileNameInit(properties) == true ? properties.fileResponse : ""
     }
   }
 
@@ -377,6 +400,27 @@ updateAPIService(service, liste_service){
   return liste_service
 }
 
+
+RemoveNodeInArrayHeader(line, array_data) {
+  let self = this
+  return array_data.filter(function(header) {
+      if (header.position == line.position) {
+        self.successmsg("Header " + line.Key + " supprimé ! ")
+        return false;
+      }
+      return true;
+  });
+}
+
+reorderArrayHeader( array_data ) {
+  let index = 1
+  for(var indice in array_data){
+    array_data[indice].position = index
+    index += 1
+  }
+  return array_data
+}
+
 /********************************* Check doublon  */
 
 
@@ -409,6 +453,31 @@ getFormatText(){
     {id: 3, name: "html", value: "text/html"}
   ]
 }
+
+
+getMethodsGeneration(){
+  return [
+    { id: '1', name: 'POST'},
+    { id: '2', name: 'GET'},
+    { id: '3', name: 'PUT'},
+    { id: '4', name: 'DELETE'},
+    { id: '5', name: 'HEAD'},
+    { id: '6', name: 'OPTIONS'},
+    { id: '7', name: 'PATCH'}
+  ]
+}
+
+
+isJson(str) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
+
 
 
 }

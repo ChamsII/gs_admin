@@ -26,6 +26,28 @@
               </select>
             </div>
 
+            <div class="form-group">
+              <label for="typeCtrl">Réponse : Fichier ou Données </label>
+              <select placeholder = "Type" formControlName="typeCtrl" class="form-control form-control-sm" (change)="selectTypeResponseChange($event)" >
+                  <option *ngFor = "let type of typesResponse" 
+                    [value] = "type.name">
+                    {{ type.name }}
+                  </option>
+              </select>
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                Le service retourne le contenu du template ou un fichier 
+              </small>
+            </div>
+
+            <div *ngIf="fileResponse" class="form-group">
+              <label for="fileNameCtrl">Nom du fichier</label>
+              <input id="fileNameCtrl" type="text" class="form-control" formControlName="fileNameCtrl" placeholder="Nom du fichier" >
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                Le nom du fichier retourné par le service. Exemple : fichier.bat
+              </small>
+            </div>
+
+
         </div>
       </form>
   

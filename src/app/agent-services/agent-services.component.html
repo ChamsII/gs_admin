@@ -18,7 +18,7 @@
                   <div class="col-2">Services</div>
                   <div class="col-8">
                       <div class="md-form mt-0">
-                        <input class="form-control" type="text" aria-label="Search" name="searchString" placeholder="Type to filter..." [(ngModel)]="searchString" >
+                        <input class="form-control" type="text" aria-label="Search" (input)="filterService($event.target.value)" name="searchString" placeholder="Type to filter... ( case-sensitive ) " [(ngModel)]="searchString" >
                       </div>
                   </div>
                   <div class="col-2">
@@ -31,7 +31,7 @@
         
               <div class="card-body">
         
-                <div class="row" *ngFor="let srv of data.services | filter : 'basepath' : searchString; index as i;">
+                <div class="row" *ngFor="let srv of data.services; index as i;"> <!-- | filter : 'basepath' : searchString -->
         
                   <div class="col-9" tappable (click)="onSelectService(srv, i)" [ngClass]="{'serviceActifSelected': srv.status == 1 && data.selected.basepath == srv.basepath, 
                   'serviceActif': srv.status == 1 && data.selected.basepath != srv.basepath, 

@@ -14,6 +14,8 @@ import 'brace';
 import 'brace/mode/xml';
 import 'brace/theme/textmate';
 import 'brace/mode/json';
+import 'brace/mode/html';
+import 'brace/mode/text';
 
 
 @Component({
@@ -25,9 +27,7 @@ export class GenerationComponent implements OnInit {
 
   methodOperations
   testGenerationGroup : FormGroup
-  agentGeneSisSelect
   resultRequest
-  agentsGenesis
   currentJustify = 'fill'
 
   /** Header  */
@@ -61,7 +61,7 @@ export class GenerationComponent implements OnInit {
       authPasswordCtrl: ['']
     });
 
-    of( this.functionService.getMethods() ).subscribe(methods => {
+    of( this.functionService.getMethodsGeneration() ).subscribe(methods => {
       this.methodOperations = methods
       this.testGenerationGroup.patchValue({methodCtrl: this.methodOperations[1].name})
     })
@@ -69,6 +69,9 @@ export class GenerationComponent implements OnInit {
     of( this.functionService.getFormatText() ).subscribe(format => {
       this.listFormatText = format
     })
+
+    this.dataSource.data = []
+    //this.backendService.getTestExternal();
 
   }
 
@@ -81,6 +84,8 @@ export class GenerationComponent implements OnInit {
           urlapuCtrl: confirmed.service.url ,
           methodCtrl: confirmed.service.operation
         })
+        this.dataSource.data.push({position: (this.dataSource.data.length + 1), Key: "Content-Type", Value: "text/plain" });
+        this.dataSource.data.push({position: (this.dataSource.data.length + 1), Key: "Accept", Value: "text/plain, application/json, text/html, application/xhtml+xml, application/xml, */*" });
       }
     })
     .catch(() => {
@@ -88,9 +93,13 @@ export class GenerationComponent implements OnInit {
   }
 
   
-
-  checkboxLabel(row?: HeaderData): string {
+  /* checkboxLabel(row?: HeaderData): string {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  } */
+
+  removeRow(row) {
+    this.dataSource.data = this.functionService.RemoveNodeInArrayHeader(row, this.dataSource.data )
+    this.dataSource.data = this.functionService.reorderArrayHeader( this.dataSource.data )
   }
 
   createNewHeader(position: number): HeaderData {
@@ -111,13 +120,12 @@ export class GenerationComponent implements OnInit {
   }
 
   selectMethodChangeHandler( event : any ){
-    if(event.target.value == "GET" || event.target.value == "HEAD" || event.target.value == "OPTIONS") {
+    if(event.target.value == "GET" || event.target.value == "HEAD" || event.target.value == "OPTIONS" || event.target.value == "DELETE" ) {
       this.desableBody = true
     }else{
       this.desableBody = false
     }
   }
-
 
   runTest(){
 
@@ -130,12 +138,22 @@ export class GenerationComponent implements OnInit {
       body: this.bodyData
     }
 
-    let post_methode = ["POST", "PUT", "DELETE", "TRACE", "CONNECT"]
-    //let get_methode = ["GET", "HEAD", "OPTIONS"]
-    if(post_methode.includes(operation.method)){
+    ////  ["POST", "GET", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS" ]
+
+    if( operation.method == "POST"){
       this.postMethode(operation)
-    }else{
+    }else if( operation.method == "GET"){
       this.getMethode(operation)
+    }else if( operation.method == "PUT"){
+      this.putMethode(operation)
+    }else if( operation.method == "DELETE"){
+      this.deleteMethode(operation)
+    }else if( operation.method == "PATCH"){
+      this.patchMethode(operation)
+    }else if( operation.method == "HEAD"){
+      this.headMethode(operation)
+    }else if( operation.method == "OPTIONS"){
+      this.optionsMethode(operation)
     }
     
   }
@@ -149,7 +167,7 @@ export class GenerationComponent implements OnInit {
       }else{
         this.resultatRequest = result
       }
-      this.modeResultat = this.resultatRequest.substring(0,1) == '<' ? 'xml' : 'json'
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html' // this.resultatRequest.substring(0,1) == '<' ? 'html' : 'json'
     })
     .catch(error => {
     })
@@ -164,11 +182,83 @@ export class GenerationComponent implements OnInit {
       }else{
         this.resultatRequest = result
       }
-      this.modeResultat = this.resultatRequest.substring(0,1) == '<' ? 'xml' : 'json'
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
     })
     .catch(error => {
     })
   }
+
+  putMethode(operation){
+    this.backendService.putTestData(operation)
+    .then(result => {
+      if( result.status == 200 && result.name == "HttpErrorResponse"){
+        this.resultatRequest = result.error.text
+      }else{
+        this.resultatRequest = result
+      }
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
+    })
+    .catch(error => {
+    })
+  }
+
+  deleteMethode(operation){
+    this.backendService.deleteTestData(operation)
+    .then(result => {
+      if( result.status == 200 && result.name == "HttpErrorResponse"){
+        this.resultatRequest = result.error.text
+      }else{
+        this.resultatRequest = result
+      }
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
+    })
+    .catch(error => {
+    })
+  }
+
+  patchMethode(operation){
+    this.backendService.patchTestData(operation)
+    .then(result => {
+      if( result.status == 200 && result.name == "HttpErrorResponse"){
+        this.resultatRequest = result.error.text
+      }else{
+        this.resultatRequest = result
+      }
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
+    })
+    .catch(error => {
+    })
+  }
+  
+  headMethode(operation){
+    this.backendService.headTestData(operation)
+    .then(result => {
+      if( result.status == 200 && result.name == "HttpErrorResponse"){
+        this.resultatRequest = result.error.text
+      }else{
+        this.resultatRequest = result
+      }
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
+    })
+    .catch(error => {
+    })
+  }
+
+  optionsMethode(operation){
+    this.backendService.optionsTestData(operation)
+    .then(result => {
+      if( result.status == 200 && result.name == "HttpErrorResponse"){
+        this.resultatRequest = result.error.text
+      }else{
+        this.resultatRequest = result
+      }
+      this.modeResultat = this.resultatRequest.substring(0,2) == '<?' ? 'xml' : this.functionService.isJson(this.resultatRequest)  ? 'json' : 'html'
+    })
+    .catch(error => {
+    })
+  }
+  
+
 
   saveTest(){
 

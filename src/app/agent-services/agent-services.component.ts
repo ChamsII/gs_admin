@@ -15,16 +15,15 @@ export class AgentServicesComponent implements OnInit {
   public searchString: string;
   agentSelected
   pageNum = 1
-  filter = ""
-  listServices = [];
-  requestResultat;
-  operationSelected
-  dataSelected
 
-  feederPropSelected;
-  parametersSelected;
-  transferPropSelected;
-  regExpKeysOSelected;
+  requestResultat;
+  operationSelected = null
+  dataSelected = null
+
+  feederPropSelected = [];
+  parametersSelected = null;
+  transferPropSelected =null;
+  regExpKeysOSelected = null ;
   keysSelected;
   responseSelected;
   apiSelected;
@@ -54,7 +53,6 @@ export class AgentServicesComponent implements OnInit {
   editModeSet
   @Output() editModeEmitter = new EventEmitter();
 
-
   constructor(public backendService: BackendService , public confirmationDialogService: ConfirmationDialogService , 
     public eventsService: EventsService , public functionService: FunctionService ) {
 
@@ -70,6 +68,19 @@ export class AgentServicesComponent implements OnInit {
       this.onEditeMode(editMChange)
     })
 
+    this.eventsService.agentSelected.subscribe(agent => {
+
+      this.agentSelected = agent;
+      this.initElement()
+      this.displayPage()
+    })
+
+    if(this.eventsService.serviceReload) {
+      this.eventsService.setReloadService(false)
+      this.initElement()
+      this.displayPage()
+    }
+
   }
 
   /**
@@ -77,15 +88,44 @@ export class AgentServicesComponent implements OnInit {
    */
   @Input()
   set agentSelect(name) {
+    
+    if( name ) {
       this.agentSelected = name;
-      if( this.agentSelected )
-      this.displayPage()
+      //this.initElement() //this.displayPage()
+    }
   }
 
 
   @Input()
   set editMode(name) {
       this.editModeSet = name;
+  }
+
+
+  initElement(){
+    this.pageNum = 1 
+    this.servicesPerPage = 10
+    this.data = {
+      services: [],
+      agent: {},
+      selected: -1,
+      currentPage: 1,
+      filter: '',
+      pages: 1,
+      notifications: {},
+    }
+    this.dataSet = {
+      datasets:[],
+      selected:{ dataset:{}, template:{}, parameters: {} }, //dataset:{}, details:{}, template:{}
+      currentPage:1,
+      pages:1
+    }
+    this.operationSelected = null
+    this.dataSelected = null
+    this.feederPropSelected = [];
+    this.parametersSelected = null;
+    this.transferPropSelected =null;
+    this.regExpKeysOSelected = null ;
   }
 
 
@@ -136,13 +176,14 @@ export class AgentServicesComponent implements OnInit {
                 this.operationSelected = this.dataSelected.apis[0].operations
 
                 this.transferPropSelected = this.dataSelected.apis[0].operations[0].transferProperties
-                this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties
+                this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties ? this.dataSelected.apis[0].operations[0].feederProperties : []
                 this.parametersSelected =  this.dataSelected.apis[0].operations[0].parameters
                 this.regExpKeysOSelected = this.dataSelected.apis[0].operations[0].regExpKeys
                 this.keysSelected = this.dataSelected.apis[0].operations[0].keys
                 this.responseSelected = {
                   delay: this.dataSelected.apis[0].operations[0].delay,
-                  responseType: this.dataSelected.apis[0].operations[0].responseType
+                  responseType: this.dataSelected.apis[0].operations[0].responseType,
+                  fileResponse: this.functionService.fileNameInit( this.dataSelected.apis[0].operations[0] ) == true ? this.dataSelected.apis[0].operations[0].fileResponse : ""
                 }
               }
 
@@ -152,13 +193,11 @@ export class AgentServicesComponent implements OnInit {
             .catch(error => {
             })
 
-
           });
 
         }
 
       }
-     
 
     })
     .catch(error => {
@@ -184,6 +223,12 @@ export class AgentServicesComponent implements OnInit {
     this.displayPage()
   }
 
+  filterService( filter ){
+    if( this.data.filter != filter ){
+      this.data.filter = filter
+      this.displayPage()
+    }
+  }
 
 
 
@@ -200,7 +245,7 @@ export class AgentServicesComponent implements OnInit {
     //Transfert properties operation
     this.transferPropSelected = this.dataSelected.apis[0].operations[0].transferProperties
     //Feeder properties
-    this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties
+    this.feederPropSelected = this.dataSelected.apis[0].operations[0].feederProperties ? this.dataSelected.apis[0].operations[0].feederProperties : []
     //Paramètres
     this.parametersSelected =  this.dataSelected.apis[0].operations[0].parameters
     //regExpKeys
@@ -209,7 +254,8 @@ export class AgentServicesComponent implements OnInit {
     this.keysSelected = this.dataSelected.apis[0].operations[0].keys
     this.responseSelected = {
       delay: this.dataSelected.apis[0].operations[0].delay,
-      responseType: this.dataSelected.apis[0].operations[0].responseType
+      responseType: this.dataSelected.apis[0].operations[0].responseType,
+      fileResponse: this.functionService.fileNameInit( this.dataSelected.apis[0].operations[0] ) == true ? this.dataSelected.apis[0].operations[0].fileResponse : ""
     }
 
   }
@@ -223,7 +269,7 @@ export class AgentServicesComponent implements OnInit {
     //Transfert properties operation
     this.transferPropSelected = this.operationSelected[0].transferProperties
     //Feeder properties
-    this.feederPropSelected = this.operationSelected[0].feederProperties
+    this.feederPropSelected = this.operationSelected[0].feederProperties ? this.operationSelected[0].feederProperties : []
     //Paramètres
     this.parametersSelected =  this.operationSelected[0].parameters
     //regExpKeys
@@ -232,7 +278,8 @@ export class AgentServicesComponent implements OnInit {
     this.keysSelected = this.operationSelected[0].keys
     this.responseSelected = {
       delay: this.operationSelected[0].delay,
-      responseType: this.operationSelected[0].responseType
+      responseType: this.operationSelected[0].responseType,
+      fileResponse: this.functionService.fileNameInit( this.operationSelected[0] ) == true ? this.operationSelected[0].fileResponse : ""
     }
 
 

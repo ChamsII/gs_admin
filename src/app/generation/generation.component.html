@@ -9,23 +9,6 @@
 
     <form [formGroup]="testGenerationGroup" >
 
-      <!--<div class="row margin-top-20">
-          <div class="col-xl-2">
-            Agents Gene&Sis
-          </div>
-          <div class="col-xl-10">
-            <div class="form-group">
-              <select placeholder = "Agent Gene & Sis " formControlName="agentGeneSistrl" class="form-control form-control-sm" (change)="selectAgentChangeHandler($event)" >
-                  <option *ngFor = "let agent of agentsGenesis" 
-                    [value] = "agent.id">
-                    {{ agent.name }} : http://{{agent.hostname}}:{{agent.agent_port}}/
-                  </option>
-              </select>
-            </div>
-        </div>
-      </div> -->
-
-
     <div class="row margin-top-20">
 
         <!-- methods  -->
@@ -54,22 +37,22 @@
         </div>
 
         <!-- send -->
-        <div class="col-xl-1" (click)="runTest()"  >
+        <div class="col-xl-2" (click)="runTest()"  >
 
             <div class="div_blue">
-                <i class="fa fa-check" aria-hidden="true"></i> Send
+                <i class="fa fa-hourglass-end" aria-hidden="true"></i> Envoyer
             </div>
           
         </div>
 
-        <!-- save -->
+        <!-- save
         <div class="col-xl-1" (click)="saveTest()" >
 
             <div class="div_green">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
             </div>
           
-        </div>
+        </div>  -->
 
     </div>
 
@@ -133,11 +116,15 @@
                     <ng-container matColumnDef="select">
                       <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
                       <mat-cell *matCellDef="let row">
-                        <mat-checkbox (click)="$event.stopPropagation()"
+                        <!--<mat-checkbox (click)="$event.stopPropagation()"
                                       (change)="$event ? selection.toggle(row) : null"
                                       [checked]="selection.isSelected(row)"
                                       [aria-label]="checkboxLabel(row)">
-                        </mat-checkbox>
+                        </mat-checkbox>-->
+                        <button class="danger" (click)="removeRow(row)" mat-icon-button aria-label="Supprimer la ligne">
+                          <mat-icon>delete_forever</mat-icon>
+                        </button>
+
                       </mat-cell>
                     </ng-container>
 
@@ -154,7 +141,7 @@
                       <mat-header-cell *matHeaderCellDef> Key </mat-header-cell>
                       <mat-cell *matCellDef="let element">
                         <mat-form-field floatLabel="never">
-                          <input matInput placeholder="" [value]="element.Key" [(ngModel)]="element.Key" [ngModelOptions]="{standalone: true}"> 
+                          <input class="DynamicInputRow" matInput placeholder="" [value]="element.Key" [(ngModel)]="element.Key" [ngModelOptions]="{standalone: true}"> 
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -164,7 +151,7 @@
                       <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
                       <mat-cell *matCellDef="let element">
                         <mat-form-field floatLabel="never">
-                          <input matInput placeholder="" [value]="element.Value" [(ngModel)]="element.Value" [ngModelOptions]="{standalone: true}">
+                          <input class="DynamicInputRow" matInput placeholder="" [value]="element.Value" [(ngModel)]="element.Value" [ngModelOptions]="{standalone: true}">
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>

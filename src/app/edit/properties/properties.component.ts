@@ -21,8 +21,10 @@ export class PropertiesComponent implements OnInit {
   @Input() btnOkText;
   @Input() btnCancelText;
   propertiesGroup: FormGroup
-  formatResponse
+  formatResponse = []
+  typesResponse = []
   title
+  fileResponse = false
 
   constructor( private activeModal: NgbActiveModal , private _formBuilder: FormBuilder, public backendService: BackendService ,
     public functionService: FunctionService  ) { }
@@ -30,12 +32,19 @@ export class PropertiesComponent implements OnInit {
   ngOnInit() {
     this.propertiesGroup = this._formBuilder.group({
       tmpresCtrl: ['0', Validators.required ],
-      formatCtrl: ['', Validators.required]
+      formatCtrl: ['', Validators.required],
+      typeCtrl: ['', Validators.required],
+      fileNameCtrl: ['']
     });
 
     of( this.functionService.getFormatResponse() ).subscribe(formats => {
       this.formatResponse = formats
       this.propertiesGroup.patchValue( {formatCtrl : this.formatResponse[0].name } )
+    })
+
+    of( this.functionService.getTypeResponse() ).subscribe(type => {
+      this.typesResponse = type
+      this.propertiesGroup.patchValue( {typeCtrl : this.typesResponse[0].name } )
     })
 
   }
@@ -47,9 +56,19 @@ export class PropertiesComponent implements OnInit {
     let properties = this.functionService.initProperties( this.prmsSelect )
     this.propertiesGroup.patchValue( {
       tmpresCtrl: properties.delay,
-      formatCtrl: properties.responseType
+      formatCtrl: properties.responseType,
+      typeCtrl: properties.reponseContent,
+      fileNameCtrl: properties.fileName
     } )
+
+    if( properties.reponseContent == "FILE")
+      this.fileResponse = true
     
+  }
+
+  /***************************************** Properties  */
+  selectTypeResponseChange( event : any ){
+    this.fileResponse = event.target.value == "DATA" ? false: true
   }
 
   public decline() {
@@ -66,6 +85,7 @@ export class PropertiesComponent implements OnInit {
     let url = `${agentUrl}${this.serviceSelect.basepath}/${this.apiSelect.name}/${this.opSelect.method}`
     this.opSelect.responseType = "text/" + this.propertiesGroup.controls['formatCtrl'].value + ";charset=UTF-8"
     this.opSelect.delay = parseInt( this.propertiesGroup.controls['tmpresCtrl'].value )
+    this.opSelect.fileResponse = this.propertiesGroup.controls['typeCtrl'].value == "FILE" ? this.propertiesGroup.controls['fileNameCtrl'].value : ""
 
     this.backendService.postData( url , this.opSelect )
     .then(resultatRequest => {

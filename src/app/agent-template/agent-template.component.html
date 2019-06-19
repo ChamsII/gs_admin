@@ -9,7 +9,7 @@
                   <div class="col-8">Template - {{dataSetsDetail.template}}  </div>
                   <div class="col-2 "> 
                      
-                    <label for="formatCtrl">Format</label>
+                    <!--<label for="formatCtrl">Format</label>-->
                     <select placeholder = "Méthode" [(ngModel)]="modelSelectFormt" name="modelSelectFormt" class="form-controls form-control-sm" (change)="modeSelect($event.target.value)" >
                         <option *ngFor = "let format of formatResponse" 
                             [value] = "format.name">

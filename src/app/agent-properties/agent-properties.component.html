@@ -24,14 +24,19 @@
                 <div class="col-6 text-normal"> {{responseSelected.delay}} ms</div>
                 <div class="col-2">&nbsp;</div>
               </div>
+              <div class="row" *ngIf="responseSelected.fileResponse != '' " >
+                <div class="col-4 text-bold text-normal">Fichier retourné</div>
+                <div class="col-6 text-normal"> {{responseSelected.fileResponse}} </div>
+                <div class="col-2">&nbsp;</div>
+              </div>
 
               <hr class="hrSep" />
 
               <div *ngIf="reglesSelected"> <!-- regexp -->
 
                 <div class="row header-card-red">
-                    <div class="col-11">Règles </div>
-                    <div class="col-1 "> <span class="btnInHeader" (click)="addRegles()" > <i class="fa fa-plus" aria-hidden="true"></i> </span></div>
+                    <div class="col-10">Règles </div>
+                    <div class="col-2 text-right"> <span class="btnInHeader" (click)="addRegles()" > <i class="fa fa-plus" aria-hidden="true"></i> </span></div>
                   </div>
 
                 <div class="row" *ngFor="let rgl of reglesSelected; index as i;">

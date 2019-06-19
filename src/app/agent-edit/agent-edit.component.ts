@@ -7,14 +7,15 @@ import {MatStepper} from '@angular/material/stepper';
 
 import { of } from 'rxjs'
 
-
 import { BackendService } from '../services/backend.service'
 import { FunctionService } from '../services/function.service';
+import { EventsService } from '../services/events.service';
 
 @Component({
   selector: 'app-agent-edit',
   templateUrl: './agent-edit.component.html',
   styleUrls: ['./agent-edit.component.scss'],
+
   providers: [{
     provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false , showError: true }
   }]
@@ -55,6 +56,7 @@ export class AgentEditComponent implements OnInit {
 
   methodOperations = []
   formatResponse = []
+  typesResponse = []
   paramTypeFormat;
   optionsParam = []
   listParameters = []
@@ -71,17 +73,22 @@ export class AgentEditComponent implements OnInit {
   tabObjectFeeder = "un tableau d'objet [{fileKey: '', baliseResponse : ''}] dont : 'fileKey' : La clé dans le fichier de donnée. 'baliseResponse' : le champ à modifier dans le template response."
 
   leServiceACreer
+  fileResponse = false
+
+  recaputulatif
 
   @ViewChild('stepper') stepper : MatStepper; 
 
 
   constructor(private _formBuilder: FormBuilder, public backendService: BackendService , 
-    public functionService: FunctionService ) {
+    public functionService: FunctionService , public eventsService: EventsService) {
 
   }
 
   ngOnInit() {
 
+    this.agentSelected = this.functionService.getAgentSelect();
+    
     this.serviceGroup = this._formBuilder.group({
       appnameCtrl: ['', Validators.required],
       servicenameCtrl: ['', Validators.required],
@@ -96,7 +103,9 @@ export class AgentEditComponent implements OnInit {
 
     this.propertiesGroup = this._formBuilder.group({
       tmpresCtrl: ['0', Validators.required ],
-      formatCtrl: ['', Validators.required]
+      formatCtrl: ['', Validators.required],
+      typeCtrl: ['', Validators.required],
+      fileNameCtrl: ['']
     });
 
     this.parametersFroup = this._formBuilder.group({
@@ -143,6 +152,11 @@ export class AgentEditComponent implements OnInit {
       this.propertiesGroup.patchValue( {formatCtrl : this.formatResponse[0].name } )
     })
 
+    of( this.functionService.getTypeResponse() ).subscribe(type => {
+      this.typesResponse = type
+      this.propertiesGroup.patchValue( {typeCtrl : this.typesResponse[0].name } )
+    })
+
     of( this.functionService.getParamType() ).subscribe(type  => {
       this.optionsParam = type
       this.parametersFroup.patchValue( {typeparamCtrl : this.optionsParam[0].name } )
@@ -186,6 +200,11 @@ export class AgentEditComponent implements OnInit {
         this.stepper.next()
       })
     }*/
+  }
+
+  /***************************************** Properties  */
+  selectTypeResponseChange( event : any ){
+    this.fileResponse = event.target.value == "DATA" ? false: true
   }
 
   /***************************************** Paramètres  */
@@ -526,7 +545,7 @@ export class AgentEditComponent implements OnInit {
 
   @Input()
   set agentSelect(name) {
-    this.agentSelected = name;
+    //this.agentSelected = name;
   }
 
   /**
@@ -544,6 +563,13 @@ export class AgentEditComponent implements OnInit {
 
 
   /***************************************** Terminer  */
+
+  recapChange(){
+    if( this.stepper.selectedIndex  == 6 ){
+      //this.initService();
+    }
+  }
+
 
   majService(){
 
@@ -569,6 +595,7 @@ export class AgentEditComponent implements OnInit {
     //step 2 properties
     api.operations[0].responseType = "text/" + this.propertiesGroup.controls['formatCtrl'].value + ";charset=UTF-8"
     api.operations[0].delay = parseInt( this.propertiesGroup.controls['tmpresCtrl'].value )
+    api.operations[0].fileResponse = this.propertiesGroup.controls['fileNameCtrl'].value
     //step 3 : paramètres 
     api.operations[0].parameters = this.listParameters
     //step 4 : Transfert properties
@@ -589,6 +616,7 @@ export class AgentEditComponent implements OnInit {
       this.leServiceACreer = this.serviceSelected
     }
     this.leServiceACreer.apis.push(api)
+    //this.recaputulatif = this.leServiceACreer;
 
   }
 

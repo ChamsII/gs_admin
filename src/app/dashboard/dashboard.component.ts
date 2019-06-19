@@ -23,9 +23,17 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.eventsService.testAndGenerationSelected.subscribe(mode => {
       this.testAndGenerationMode = mode;
-      if( !mode )
+      if( !mode ) {
+        this.eventsService.setReloadService(true)
         this.showSidbar = true
+      }
+        
     })
+
+    this.eventsService.agentSelected.subscribe(agent => {
+      this.agentSelect = agent;
+    })
+
   }
 
 
@@ -35,7 +43,7 @@ export class DashboardComponent implements OnInit {
   }
 
   agentSelected(agent){
-    this.agentSelect = agent
+    //this.agentSelect = agent
   }
 
   clickSidebar(){
@@ -48,6 +56,9 @@ export class DashboardComponent implements OnInit {
       status: true,
       mode: 'createService'
     }
+    this.eventsService.setTestAndGenerationSelect(false)
+    this.testAndGenerationMode = false;
+
   }
 
 
@@ -55,6 +66,7 @@ export class DashboardComponent implements OnInit {
     this.eventsService.setTestAndGenerationSelect(true)
     this.testAndGenerationMode = true;
     this.showSidbar  = false;
+    this.editMode = { status: false,  mode: ''}
   }
 
 

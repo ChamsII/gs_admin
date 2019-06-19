@@ -22,7 +22,17 @@ export class EventsService {
     @Output() testAndGenerationSelected = new EventEmitter();
     testAndGenerationSelect
 
+    @Output() reloadService = new EventEmitter();
+    serviceReload = false
 
+    @Output() agentSelected = new EventEmitter();
+    agentSelect
+
+
+    setAgentSelect(agent){
+        this.agentSelect = agent
+        this.agentSelected.emit( this.agentSelect )
+    }
 
     setApiSelect(api){
         this.apiSelecte = api
@@ -47,6 +57,11 @@ export class EventsService {
     setTestAndGenerationSelect(mode){
         this.testAndGenerationSelect = mode
         this.testAndGenerationSelected.emit( this.testAndGenerationSelect )
+    }
+
+    setReloadService(reload){
+        this.serviceReload = reload
+        this.reloadService.emit( this.agentSelect )
     }
 
 

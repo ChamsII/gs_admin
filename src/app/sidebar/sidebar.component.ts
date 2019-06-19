@@ -4,6 +4,8 @@ import { BackendService } from '../services/backend.service';
 import { FunctionService } from '../services/function.service'
 import { AgentService } from '../edit/agent/agent.service';
 import { ConfirmationDialogService } from '../modal/alert-confirm/alert-confirm.service';
+import { EventsService } from '../services/events.service'
+
 
 @Component({
   selector: 'app-sidebar',
@@ -27,7 +29,8 @@ export class SidebarsComponent implements OnInit {
 
 
   constructor(public backendService: BackendService , public functionService: FunctionService , 
-    public agentService: AgentService, public confirmationDialogService: ConfirmationDialogService) { }
+    public agentService: AgentService, public confirmationDialogService: ConfirmationDialogService ,
+    public eventsService: EventsService) { }
 
   ngOnInit() {
 
@@ -44,7 +47,8 @@ export class SidebarsComponent implements OnInit {
   agentSelected(agent){
     this.agentSelect = agent
     this.functionService.setAgentSelect(agent)
-    this.selectAgent.emit(agent);
+    //this.selectAgent.emit(agent);
+    this.eventsService.setAgentSelect(agent)
   }
   
 
@@ -59,7 +63,8 @@ export class SidebarsComponent implements OnInit {
       if(this.agentsList.length > 0){
         this.agentSelect = this.agentsList[0] 
         this.functionService.setAgentSelect( this.agentsList[0] )
-        this.selectAgent.emit(this.agentsList[0]);
+        //this.selectAgent.emit(this.agentsList[0]);
+        this.eventsService.setAgentSelect( this.agentsList[0] )
       }
         
     })
