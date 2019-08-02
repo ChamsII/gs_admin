@@ -84,8 +84,11 @@ export class GenerationComponent implements OnInit {
           urlapuCtrl: confirmed.service.url ,
           methodCtrl: confirmed.service.operation
         })
+
+        this.dataSource.data = []
         this.dataSource.data.push({position: (this.dataSource.data.length + 1), Key: "Content-Type", Value: "text/plain" });
         this.dataSource.data.push({position: (this.dataSource.data.length + 1), Key: "Accept", Value: "text/plain, application/json, text/html, application/xhtml+xml, application/xml, */*" });
+        this.bodyTabValue( confirmed.service.operation )
       }
     })
     .catch(() => {
@@ -120,7 +123,12 @@ export class GenerationComponent implements OnInit {
   }
 
   selectMethodChangeHandler( event : any ){
-    if(event.target.value == "GET" || event.target.value == "HEAD" || event.target.value == "OPTIONS" || event.target.value == "DELETE" ) {
+    this.bodyTabValue( event.target.value )
+  }
+
+
+  bodyTabValue(value){
+    if(value == "GET" || value == "HEAD" || value == "OPTIONS" || value == "DELETE" ) {
       this.desableBody = true
     }else{
       this.desableBody = false
@@ -162,6 +170,8 @@ export class GenerationComponent implements OnInit {
   getMethode(operation){
     this.backendService.getTestData(operation)
     .then(result => {
+
+      console.log( result )
       if( result.status == 200 && result.name == "HttpErrorResponse"){
         this.resultatRequest = result.error.text
       }else{
