@@ -6,6 +6,8 @@ import { AgentService } from '../edit/agent/agent.service';
 import { ConfirmationDialogService } from '../modal/alert-confirm/alert-confirm.service';
 import { EventsService } from '../services/events.service'
 
+import { NewfilefeederService } from '../edit/newfilefeeder/newfilefeeder.service';
+
 
 @Component({
   selector: 'app-sidebar',
@@ -30,7 +32,7 @@ export class SidebarsComponent implements OnInit {
 
   constructor(public backendService: BackendService , public functionService: FunctionService , 
     public agentService: AgentService, public confirmationDialogService: ConfirmationDialogService ,
-    public eventsService: EventsService) { }
+    public eventsService: EventsService, public newfilefeederService: NewfilefeederService) { }
 
   ngOnInit() {
 
@@ -52,6 +54,7 @@ export class SidebarsComponent implements OnInit {
   }
   
 
+  
 
   getAgents(){
 
@@ -111,9 +114,20 @@ export class SidebarsComponent implements OnInit {
     .catch(() => {
     });
 
-
   }
 
+  newFeeder(){
+    this.newfilefeederService.confirm()
+    .then((confirmed) => {
+
+      console.log( confirmed )
+      if(confirmed.status){
+        
+      }
+    })
+    .catch(() => {
+    });
+  }
 
 
 }

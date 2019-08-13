@@ -155,9 +155,9 @@ export class AgentServicesComponent implements OnInit {
           this.requestResultat.page.forEach(element => {
             
             let url_2 =  agentUrl + "/" + element.value
+
             this.backendService.getData( url_2 )
             .then(serviceResult => {
-
 
               var id = count++
               let service = {basepath: serviceResult.basepath, state: serviceResult.state , status: 0}

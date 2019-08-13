@@ -101,6 +101,8 @@ import { AgentService } from './edit/agent/agent.service';
 import { GenerationComponent } from './generation/generation.component';
 import { AgentsComponent } from './modal/agents/agents.component';
 import { AgentsService } from './modal/agents/agents.service';
+import { NewfilefeederComponent } from './edit/newfilefeeder/newfilefeeder.component';
+import { NewfilefeederService } from './edit/newfilefeeder/newfilefeeder.service';
 
 
 @NgModule({
@@ -134,7 +136,8 @@ import { AgentsService } from './modal/agents/agents.service';
     TemplateComponent,
     AgentComponent,
     GenerationComponent,
-    AgentsComponent
+    AgentsComponent,
+    NewfilefeederComponent
   ],
   imports: [
     BrowserModule,
@@ -210,7 +213,8 @@ import { AgentsService } from './modal/agents/agents.service';
     DetailsComponent,
     TemplateComponent,
     AgentComponent,
-    AgentsComponent
+    AgentsComponent,
+    NewfilefeederComponent
   ],
   providers: [
     BackendService , ConfirmationDialogService , ApisService , 
@@ -218,7 +222,7 @@ import { AgentsService } from './modal/agents/agents.service';
     TransfertsService , FeedersService , ParametersService ,
     PropertiesService , RulesService , DatasetsService ,
     DetailsService , TemplateService , AgentService , 
-    AgentsService ],
+    AgentsService , NewfilefeederService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -661,7 +661,11 @@ export class AgentEditComponent implements OnInit {
       let destSrv = {basepath: newBasepath}
       this.backendService.postData( url , destSrv )
       .then(resultatRequest => {
-        this.backendService.successmsg( "Service [" + basepath + "] modifié" )
+        if(resultatRequest != null && resultatRequest.status && resultatRequest.status == 500){
+          this.backendService.errorsmsg( resultatRequest.error )
+        }else {
+          this.backendService.successmsg( "Service [" + basepath + "] modifié" )
+        }
         this.canclelMode("reload")
       })
       .catch(error => {

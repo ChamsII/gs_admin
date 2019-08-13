@@ -79,9 +79,10 @@ export class AgentsComponent implements OnInit {
                 for(var j in operations) {
 
                   let service = {
-                    agent: `http://${this.agentGeneSisSelect.hostname}:${this.agentGeneSisSelect.agent_port}/`,
-                    url: `http://${this.agentGeneSisSelect.hostname}:${this.agentGeneSisSelect.agent_port}/${serviceResult.basepath}${serviceResult.apis[i].uri}`,
-                    operation: operations[j].method
+                    agent: `http://${this.agentGeneSisSelect.hostname_bouchon}:${this.agentGeneSisSelect.agent_port}/`,
+                    url: `http://${this.agentGeneSisSelect.hostname_bouchon}:${this.agentGeneSisSelect.agent_port}/${serviceResult.basepath}${serviceResult.apis[i].uri}`,
+                    operation: operations[j].method,
+                    status: serviceResult.state
                   }
                   this.lesServices.push(service)
 

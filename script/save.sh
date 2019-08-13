@@ -2,12 +2,15 @@
 
 echo "Start"
 
+
+#echo "Copie server"
+
+#cp -R /home/skynet/Documents/genesis/gs_admin/server /home/skynet/Documents/genesis/gs_admin_dist
+
+
 echo "Copie dist"
 
-cp -R /home/icar/Documents/genesiss/gs-admin/dist /home/icar/Documents/genesiss/gs_admin_dist
+cp -R /home/skynet/Documents/genesis/gs_admin/dist /home/skynet/Documents/genesis/gs_admin_dist/server
 
-echo "Copie server"
-
-cp -R /home/icar/Documents/genesiss/gs-admin/server /home/icar/Documents/genesiss/gs_admin_dist
 
 echo "End"

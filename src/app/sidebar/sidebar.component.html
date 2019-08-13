@@ -5,36 +5,59 @@
         <img width="100%" alt="Angular Logo" src="assets/img/genesis2.png">
     </div>
 
-    <div class="list-group list-group-flush">
-      
-      <br />
-      <div class="row">
-        <div class="col-9">
-            <div class="div_red">GeneSiS Agents </div>
-        </div>
-        <div class="col-3" (click)="newAgent()" >
-            <div class="div_blue">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </div>
-        </div>
+    
+    <div class="row">
+      <div class="col-12" (click)="newFeeder()" >
+          <div class="div_green">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i> Ajouter un fichier Feeder
+          </div>
       </div>
-      
-      <a *ngFor="let agent of agentsList; index as ii;" href="#" (contextmenu)="onRightClick(agent)" (click)="agentSelected(agent)" class="card" [ngClass]="{'card agentSelected': agentSelect.id == agent.id , 'card': agentSelect.id != agent.id }" >
+    </div>
+    
+    <div class="row">
+      <div class="col-12 border_bottom_sep">&nbsp;</div>
+    </div>
 
-        <div class="card-body">
-          <span class="card-title">
-              <i class="fa fa-inbox" aria-hidden="true"></i>
-            {{agent.name}}
-          </span>
-          <br />
-          <span class="card-subtitle mb-2 text-muted">Agent : {{agent.hostname}}:{{agent.agent_port}} </span><br />
-          <span class="card-subtitle mb-2 text-muted">Admin : {{agent.hostname}}:{{agent.admin_port}} </span>
-          <footer class="blockquote-footer" *ngIf="agent.docker" > Docker agent </footer>
-          <footer class="blockquote-footer" *ngIf="!agent.docker" > Vm agent </footer>
-        </div>
 
-      </a>
+    <div class="row">
+      <div class="col-9">
+          <div class="div_red">GeneSiS Agents </div>
+      </div>
+      <div class="col-3" (click)="newAgent()" >
+          <div class="div_blue">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          </div>
+      </div>
+    </div>
+
+    <div class="size_list_agents">
+
+      <div class="list-group list-group-flush ">
+        
+        <br />
+        
+        <a *ngFor="let agent of agentsList; index as ii;" href="#" (contextmenu)="onRightClick(agent)" (click)="agentSelected(agent)" class="card" [ngClass]="{'card agentSelected': agentSelect.id == agent.id , 'card': agentSelect.id != agent.id }" >
+
+          <div class="card-body">
+            <span class="card-title">
+                <i class="fa fa-inbox" aria-hidden="true"></i>
+              {{agent.name}}
+            </span>
+            <br />
+            <span class="card-subtitle mb-2 text-muted">Agent : {{agent.hostname_bouchon}}:{{agent.agent_port}} </span><br />
+            <span class="card-subtitle mb-2 text-muted">Admin : {{agent.hostname}}:{{agent.admin_port}} </span>
+            <footer class="blockquote-footer" *ngIf="agent.docker" > Docker agent </footer>
+            <footer class="blockquote-footer" *ngIf="!agent.docker" > Vm agent </footer>
+          </div>
+
+        </a>
+
+      </div>
+
+      <br /><br /><br />
 
     </div>
+
+
 </div>
 <!-- End sidebar-->

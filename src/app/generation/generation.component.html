@@ -39,8 +39,11 @@
         <!-- send -->
         <div class="col-xl-2" (click)="runTest()"  >
 
-            <div class="div_blue">
+            <div [ngClass]="{'div_grey': state_service_selected == 'stopped' , 'div_blue': state_service_selected == 'running' }" >
                 <i class="fa fa-hourglass-end" aria-hidden="true"></i> Envoyer
+            </div>
+            <div *ngIf="state_service_selected == 'stopped'" class="div_service_stopped">
+              Service non démarré.
             </div>
           
         </div>

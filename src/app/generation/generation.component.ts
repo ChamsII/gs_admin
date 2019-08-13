@@ -46,6 +46,8 @@ export class GenerationComponent implements OnInit {
   resultatRequest = ""
   modeResultat = 'xml'
 
+  state_service_selected = "running";
+
 
   constructor( public backendService: BackendService ,  private _formBuilder: FormBuilder,
     public functionService: FunctionService , public eventsService: EventsService , 
@@ -84,6 +86,7 @@ export class GenerationComponent implements OnInit {
           urlapuCtrl: confirmed.service.url ,
           methodCtrl: confirmed.service.operation
         })
+        this.state_service_selected = confirmed.service.status
 
         this.dataSource.data = []
         this.dataSource.data.push({position: (this.dataSource.data.length + 1), Key: "Content-Type", Value: "text/plain" });
@@ -137,31 +140,37 @@ export class GenerationComponent implements OnInit {
 
   runTest(){
 
-    let operation = {
-      method: this.testGenerationGroup.controls['methodCtrl'].value ,
-      url: this.testGenerationGroup.controls['urlapuCtrl'].value ,
-      url_with_params: this.paramsData != "" ? `${this.testGenerationGroup.controls['urlapuCtrl'].value}?${this.paramsData}` : "",
-      autorization: {username: this.testGenerationGroup.controls['authUserCtrl'].value, password: this.testGenerationGroup.controls['authPasswordCtrl'].value},
-      header: this.dataSource.data ,
-      body: this.bodyData
-    }
+    if( this.state_service_selected == 'stopped' ){
+      this.backendService.errorsmsg( "Service non démarré." )
+    }else {
 
-    ////  ["POST", "GET", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS" ]
+      let operation = {
+        method: this.testGenerationGroup.controls['methodCtrl'].value ,
+        url: this.testGenerationGroup.controls['urlapuCtrl'].value ,
+        url_with_params: this.paramsData != "" ? `${this.testGenerationGroup.controls['urlapuCtrl'].value}?${this.paramsData}` : "",
+        autorization: {username: this.testGenerationGroup.controls['authUserCtrl'].value, password: this.testGenerationGroup.controls['authPasswordCtrl'].value},
+        header: this.dataSource.data ,
+        body: this.bodyData
+      }
+  
+      ////  ["POST", "GET", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS" ]
+  
+      if( operation.method == "POST"){
+        this.postMethode(operation)
+      }else if( operation.method == "GET"){
+        this.getMethode(operation)
+      }else if( operation.method == "PUT"){
+        this.putMethode(operation)
+      }else if( operation.method == "DELETE"){
+        this.deleteMethode(operation)
+      }else if( operation.method == "PATCH"){
+        this.patchMethode(operation)
+      }else if( operation.method == "HEAD"){
+        this.headMethode(operation)
+      }else if( operation.method == "OPTIONS"){
+        this.optionsMethode(operation)
+      }
 
-    if( operation.method == "POST"){
-      this.postMethode(operation)
-    }else if( operation.method == "GET"){
-      this.getMethode(operation)
-    }else if( operation.method == "PUT"){
-      this.putMethode(operation)
-    }else if( operation.method == "DELETE"){
-      this.deleteMethode(operation)
-    }else if( operation.method == "PATCH"){
-      this.patchMethode(operation)
-    }else if( operation.method == "HEAD"){
-      this.headMethode(operation)
-    }else if( operation.method == "OPTIONS"){
-      this.optionsMethode(operation)
     }
     
   }
@@ -171,7 +180,6 @@ export class GenerationComponent implements OnInit {
     this.backendService.getTestData(operation)
     .then(result => {
 
-      console.log( result )
       if( result.status == 200 && result.name == "HttpErrorResponse"){
         this.resultatRequest = result.error.text
       }else{
@@ -239,6 +247,7 @@ export class GenerationComponent implements OnInit {
     .catch(error => {
     })
   }
+  
   
   headMethode(operation){
     this.backendService.headTestData(operation)

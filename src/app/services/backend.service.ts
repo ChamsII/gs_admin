@@ -16,6 +16,10 @@ export class BackendService {
   private msgErreur = JSON.parse('{}');
   private agents_url = "http://localhost:3000/agent/"
 
+  //private agents_url = "http://10.79.213.51:3000/agent/";
+
+
+
   private headers = new HttpHeaders()
 
   constructor( private http: HttpClient, private toastr: ToastrService ) { }

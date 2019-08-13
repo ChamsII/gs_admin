@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="modal-title"> Ajouter un fichier de données Feeder </h4>
+    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+  
+  <div class="modal-body">
+    
+    <form [formGroup]="feedersGroup" >
+      
+      <div class="example-container">
+  
+        <div class="row">
+  
+          <div class="col form-group">
+            <label for="csvFileCtrl">Csv File</label>
+            <input id="csvFileCtrl" type="text" class="form-control" formControlName="csvFileCtrl" placeholder="Nom du fichier de données jdd.csv" >
+            <small id="passwordHelpBlock" class="form-text text-muted">
+              Nom du fichier de données jdd.csv
+            </small>
+          </div>
+  
+        </div>
+  
+        <div class="row">
+          <div class="col-12 form-group">
+            <label for="valueCtrl">Contenu du fichier CSV de données</label>
+            
+            <div ace-editor
+              [(text)]="textFeederValue"
+              [mode]="modeSelected"
+              [theme]="themeSelected"
+              [readOnly]="false"
+              [autoUpdateContent]="true"
+              [durationBeforeCallback]="1000" 
+              style="height: 100%; width:100%; overflow-x: auto; min-height: 100px;">
+            </div>
+            
+          </div>
+  
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-12 form-group">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                Copier le contenu du fichier CSV ici<br />
+                <b>Exemple </b> : <br />
+                id,firstName,lastName<br />
+                1,Olivier,Kaisin
+              </small>
+          </div>
+        </div>
+  
+      </div>
+    </form>
+  
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="decline()">{{ btnCancelText }}</button>
+    <button type="" class="btn btn-primary" (click)="accept()">{{ btnOkText }} </button>
+  </div>

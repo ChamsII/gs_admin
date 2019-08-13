@@ -33,7 +33,7 @@ export class FeedersComponent implements OnInit {
 
   ngOnInit() {
     this.feedersGroup = this._formBuilder.group({
-      csvFileCtrl: [''],
+      csvFileCtrl: ['', Validators.required],
       valueCtrl: [''],
       typeCtrl: ['xml'],
       isRandomCtrl: ['0']
@@ -59,11 +59,22 @@ export class FeedersComponent implements OnInit {
     
   }
 
+
+  getFileExtension(filename) {
+    //(this.feedersGroup.controls['csvFileCtrl'].value).split('.').pop()
+    return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+  }
+
   initFeeder(){
+    this.onChangeValueFeeder( this.textFeederValue )
     let feeder = this.functionService.initFeeder( this.fdSelect )
     feeder.isRandom = this.feedersGroup.controls['isRandomCtrl'].value
-    feeder.value = JSON.parse( this.feedersGroup.controls['valueCtrl'].value)
-    feeder.csvFile = this.feedersGroup.controls['csvFileCtrl'].value
+    feeder.value = JSON.parse( this.feedersGroup.controls['valueCtrl'].value )
+    if( this.getFileExtension( this.feedersGroup.controls['csvFileCtrl'].value)  != "csv" ) {
+      feeder.csvFile = this.feedersGroup.controls['csvFileCtrl'].value + ".csv"
+    }else{
+      feeder.csvFile = this.feedersGroup.controls['csvFileCtrl'].value
+    }
     return feeder
   }
 
@@ -106,9 +117,19 @@ export class FeedersComponent implements OnInit {
     if(!this.opSelect.feederProperties || this.opSelect.feederProperties == undefined)
       this.opSelect.feederProperties = []
 
+    if( this.feedersGroup.controls['csvFileCtrl'].value == "" ) {
+      this.backendService.errorsmsg( `FD [Csv File] est vide ` )
+      return
+    }
+
     let feederProperties =  this.opSelect.feederProperties.map(function(val) { return val.csvFile })
     if(feederProperties.includes( this.feedersGroup.controls['csvFileCtrl'].value ) ){
       this.backendService.errorsmsg( `FD [${this.feedersGroup.controls['csvFileCtrl'].value}] existe déjà` )
+      return
+    }
+
+    if( this.feedersGroup.controls['valueCtrl'].value == "" ) {
+      this.backendService.errorsmsg( `FD [Valeur] n'est pas renseigné ` )
       return
     }
 
@@ -118,6 +139,11 @@ export class FeedersComponent implements OnInit {
   }
 
   updateFeeder(){
+
+    if( this.feedersGroup.controls['valueCtrl'].value == "" ) {
+      this.backendService.errorsmsg( `FD [Valeur] n'est pas renseigné ` )
+      return
+    }
 
     let feederProperties =  this.opSelect.feederProperties.map(function(val) { return val.csvFile })
     if( this.feedersGroup.controls['csvFileCtrl'].value != this.fdSelect.csvFile ){
